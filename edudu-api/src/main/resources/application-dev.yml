@@ -1,0 +1,37 @@
+# 开发环境配置
+spring:
+  profiles:
+    active: dev
+  
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/edudu?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root123
+  
+  # Redis配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 
+      database: 0
+
+# AI配置（开发环境）
+ai:
+  api-key: your-api-key-here
+  model-type: openai
+  model-name: gpt-4o-mini
+  timeout: 30
+  temperature: 0.7
+
+# JWT配置
+jwt:
+  secret: edudu-dev-secret-key
+  expire-time: 1440
+
+# 日志配置
+logging:
+  level:
+    com.edudu: debug

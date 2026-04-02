@@ -1,7 +1,40 @@
 -- ----------------------------
 -- AI早教陪伴平台 - 业务表SQL
--- 包含：孩子管理、AI故事、每日任务、成长记录、家长助手、订阅管理
+-- 包含：前端用户、孩子管理、AI故事、每日任务、成长记录、家长助手、订阅管理
 -- ----------------------------
+
+-- ----------------------------
+-- 0、前端用户表（与后台sys_user区分，面向家长用户）
+-- ----------------------------
+drop table if exists edu_user;
+create table edu_user (
+  user_id           bigint(20)      not null auto_increment    comment '用户ID',
+  union_id          varchar(128)    default ''                  comment '微信UnionID',
+  open_id           varchar(128)    default ''                  comment '微信OpenID',
+  phone             varchar(20)     default ''                  comment '手机号',
+  nickname          varchar(50)     default ''                  comment '昵称',
+  avatar            varchar(255)    default ''                  comment '头像',
+  gender            char(1)         default '0'                 comment '性别（0未知 1男 2女）',
+  birthday          date            default null                comment '生日',
+  password          varchar(100)    default ''                  comment '密码（可选，手机号登录可为空）',
+  status            char(1)         default '0'                comment '状态（0正常 1禁用）',
+  del_flag          char(1)         default '0'                comment '删除标志（0存在 2删除）',
+  login_ip          varchar(128)    default ''                  comment '最后登录IP',
+  login_date        datetime                                   comment '最后登录时间',
+  create_by         varchar(64)     default ''                  comment '创建者',
+  create_time       datetime                                   comment '创建时间',
+  update_by         varchar(64)     default ''                  comment '更新者',
+  update_time       datetime                                   comment '更新时间',
+  remark            varchar(500)    default null                comment '备注',
+  primary key (user_id),
+  unique key uk_phone (phone),
+  unique key uk_union_id (union_id),
+  key idx_open_id (open_id)
+) engine=innodb auto_increment=1 comment = '前端用户表';
+
+-- 初始化-前端用户数据
+insert into edu_user values(1, '', '', '13800138000', '测试家长', '', '1', null, '', '0', '0', '127.0.0.1', sysdate(), 'admin', sysdate(), '', null, '测试账号');
+
 
 -- ----------------------------
 -- 1、孩子信息表

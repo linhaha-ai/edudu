@@ -54,6 +54,12 @@
             <artifactId>edudu-generator</artifactId>
         </dependency>
 
+        <!-- 业务模块（用户、孩子、AI故事等）-->
+        <dependency>
+            <groupId>com.edudu</groupId>
+            <artifactId>edudu-edu</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -170,6 +170,13 @@
                 <version>${edudu.version}</version>
             </dependency>
 
+            <!-- 业务模块（用户、孩子、AI故事等）-->
+            <dependency>
+                <groupId>com.edudu</groupId>
+                <artifactId>edudu-edu</artifactId>
+                <version>${edudu.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -180,6 +187,9 @@
         <module>edudu-quartz</module>
         <module>edudu-generator</module>
         <module>edudu-common</module>
+        <module>edudu-ai</module>
+        <module>edudu-edu</module>
+        <module>edudu-api</module>
     </modules>
     <packaging>pom</packaging>
 
