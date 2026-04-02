@@ -31,7 +31,7 @@
 
 | 模块 | 技术方案 |
 |------|----------|
-| 后端 | Java + Spring Boot (RuoYi) |
+| 后端 | Java + Spring Boot (EduDu) |
 | 数据库 | MySQL + Redis |
 | AI能力 | OpenAI API / 国内大模型 + LangChain4j |
 | 前端 | Flutter（跨平台App）或 Vue + Tauri（桌面工具） |
@@ -40,22 +40,22 @@
 ### 2.2 项目结构
 
 ```
-ruoyi
-├── ruoyi-admin         # 启动入口
-├── ruoyi-system        # 系统模块（用户管理、权限）
-├── ruoyi-common        # 工具类
-├── ruoyi-framework     # 权限/安全
-├── ruoyi-education     # 核心业务模块
-└── ruoyi-ai            # AI能力模块
+edudu
+├── edudu-admin         # 启动入口
+├── edudu-system        # 系统模块（用户管理、权限）
+├── edudu-common        # 工具类
+├── edudu-framework     # 权限/安全
+├── edudu-api     # 核心业务模块
+└── edudu-ai            # AI能力模块
 ```
 
 ### 2.3 模块划分
 
-#### ruoyi-education（业务核心）
+#### edudu-api（业务核心）
 
 ```
-ruoyi-education
-└── com.ruoyi.education
+edudu-api
+└── com.edudu.education
     ├── controller
     │   ├── StoryController.java      # 故事接口
     │   ├── TaskController.java       # 任务接口
@@ -93,11 +93,11 @@ ruoyi-education
         └── GrowthVO.java
 ```
 
-#### ruoyi-ai（AI模块）
+#### edudu-ai（AI模块）
 
 ```
-ruoyi-ai
-└── com.ruoyi.ai
+edudu-ai
+└── com.edudu.ai
     ├── service
     │   ├── AiService.java
     │   ├── StoryAiService.java
@@ -565,7 +565,7 @@ public class StoryPromptBuilder {
 
 ### 8.2 实施步骤
 
-1. 搭建 RuoYi 框架
+1. 搭建 EduDu 框架
 2. 建表（使用SQL脚本）
 3. 写核心接口
 4. 接入 AI
