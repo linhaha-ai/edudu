@@ -17,28 +17,15 @@
 
     <dependencies>
 
-        <!-- 通用模块 -->
+        <!-- 核心模块-->
         <dependency>
             <groupId>com.edudu</groupId>
-            <artifactId>edudu-common</artifactId>
+            <artifactId>edudu-framework</artifactId>
         </dependency>
 
-        <!-- 系统模块 -->
-        <dependency>
-            <groupId>com.edudu</groupId>
-            <artifactId>edudu-system</artifactId>
-        </dependency>
-
-        <!-- AI模块 -->
         <dependency>
             <groupId>com.edudu</groupId>
             <artifactId>edudu-ai</artifactId>
-        </dependency>
-
-        <!-- 业务模块（用户、孩子、AI故事等）- edudu-api依赖此模块 -->
-        <dependency>
-            <groupId>com.edudu</groupId>
-            <artifactId>edudu-edu</artifactId>
         </dependency>
 
         <!-- spring-boot-devtools -->
@@ -46,12 +33,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
-        </dependency>
-
-        <!-- spring-boot-starter-web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- spring-boot-starter-validation -->

@@ -57,7 +57,7 @@
         <!-- 业务模块（用户、孩子、AI故事等）-->
         <dependency>
             <groupId>com.edudu</groupId>
-            <artifactId>edudu-edu</artifactId>
+            <artifactId>edudu-ai</artifactId>
         </dependency>
 
     </dependencies>

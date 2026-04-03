@@ -1,10 +1,8 @@
 package com.edudu.ai.service;
 
-import com.edudu.ai.config.AiProperties;
-import com.edudu.ai.prompt.PromptBuilder;
 import dev.langchain4j.model.chat.ChatLanguageModel;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,12 +10,11 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public abstract class AbstractAiService {
 
-    protected final ChatLanguageModel chatLanguageModel;
-    protected final AiProperties aiProperties;
-
+    @Autowired
+    protected ChatLanguageModel chatLanguageModel;
+    
     /**
      * 调用AI生成内容
      * @param prompt 提示词
@@ -35,10 +32,4 @@ public abstract class AbstractAiService {
         return response;
     }
 
-    /**
-     * 获取当前使用的模型名称
-     */
-    public String getModelName() {
-        return aiProperties.getModelName();
-    }
 }

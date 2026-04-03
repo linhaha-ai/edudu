@@ -66,12 +66,4 @@ public class StoryController {
         return AjaxResult.success(result);
     }
 
-    /**
-     * 获取当前AI模型信息
-     */
-    @GetMapping("/model")
-    @Operation(summary = "获取AI模型信息")
-    public AjaxResult getModelInfo() {
-        return AjaxResult.success("model", storyAiService.getModelName());
-    }
 }

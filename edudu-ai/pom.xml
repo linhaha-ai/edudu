@@ -16,45 +16,27 @@
 
     <dependencies>
 
-        <!-- 通用模块 -->
         <dependency>
             <groupId>com.edudu</groupId>
-            <artifactId>edudu-common</artifactId>
+            <artifactId>edudu-edu</artifactId>
         </dependency>
 
-        <!-- LangChain4j 核心 -->
+        <!-- LangChain4j Core (包含 ChatLanguageModel 等接口) -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j</artifactId>
-            <version>1.0.0</version>
+            <artifactId>langchain4j-core</artifactId>
         </dependency>
 
-        <!-- LangChain4j OpenAI -->
+        <!-- 接入 OpenAI（可替换为通义/文心/Ollama 等） -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-open-ai</artifactId>
-            <version>1.0.0</version>
+            <artifactId>langchain4j-open-ai-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- LangChain4j Azure OpenAI -->
+        <!-- 嵌入模型（RAG 用） -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-azure-open-ai</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <!-- LangChain4j阿里云通义千问 -->
-        <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-dashscope</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <!-- HTTP客户端（OkHttp） -->
-        <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-http-client</artifactId>
-            <version>1.0.0</version>
+            <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
         </dependency>
 
         <!-- Spring Boot配置处理器 -->
@@ -72,19 +54,5 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <parameters>true</parameters>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

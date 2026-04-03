@@ -6,14 +6,13 @@
     <parent>
         <groupId>com.edudu</groupId>
         <artifactId>edudu</artifactId>
-        <version>1.0.0</version>
+        <version>3.9.2</version>
     </parent>
 
     <artifactId>edudu-edu</artifactId>
 
     <description>
-        AI早教平台 - 业务模块
-        包含：用户、孩子、AI故事、每日任务、成长记录、家长助手、订阅管理
+        业务模块
     </description>
 
     <dependencies>
@@ -23,21 +22,9 @@
             <artifactId>edudu-common</artifactId>
         </dependency>
 
-        <!-- AI模块（可选） -->
-        <dependency>
-            <groupId>com.edudu</groupId>
-            <artifactId>edudu-ai</artifactId>
-        </dependency>
-
-        <!-- 核心依赖 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <artifactId>mybatis-plus-spring-boot4-starter</artifactId>
         </dependency>
 
         <!-- Redis缓存 -->
@@ -50,6 +37,13 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-captcha</artifactId>
+        </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
