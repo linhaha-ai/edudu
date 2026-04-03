@@ -156,10 +156,10 @@
             </dependency>
 
 
-            <!-- LangChain4j Core (包含 ChatLanguageModel 等接口) -->
+            <!-- LangChain4j (包含 Memory 和 RAG) -->
             <dependency>
                 <groupId>dev.langchain4j</groupId>
-                <artifactId>langchain4j-core</artifactId>
+                <artifactId>langchain4j</artifactId>
                 <version>${langchain4j.version}</version>
             </dependency>
 
