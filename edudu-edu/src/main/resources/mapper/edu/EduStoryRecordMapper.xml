@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edudu.edu.mapper.EduStoryRecordMapper">
+    
+    <resultMap type="com.edudu.edu.domain.EduStoryRecord" id="EduStoryRecordResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="childId"    column="child_id"    />
+        <result property="age"    column="age"    />
+        <result property="scene"    column="scene"    />
+        <result property="goal"    column="goal"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="moral"    column="moral"    />
+        <result property="modelType"    column="model_type"    />
+        <result property="tokensUsed"    column="tokens_used"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectEduStoryRecordVo">
+        select id, user_id, child_id, age, scene, goal, title, content, moral, model_type, tokens_used, create_by, create_time, update_by, update_time from edu_story_record
+    </sql>
+
+    <select id="selectEduStoryRecordList" parameterType="EduStoryRecord" resultMap="EduStoryRecordResult">
+        <include refid="selectEduStoryRecordVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="childId != null "> and child_id = #{childId}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="scene != null  and scene != ''"> and scene = #{scene}</if>
+            <if test="goal != null  and goal != ''"> and goal = #{goal}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="moral != null  and moral != ''"> and moral = #{moral}</if>
+            <if test="modelType != null  and modelType != ''"> and model_type = #{modelType}</if>
+            <if test="tokensUsed != null "> and tokens_used = #{tokensUsed}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduStoryRecordById" parameterType="Long" resultMap="EduStoryRecordResult">
+        <include refid="selectEduStoryRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEduStoryRecord" parameterType="EduStoryRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into edu_story_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="childId != null">child_id,</if>
+            <if test="age != null">age,</if>
+            <if test="scene != null">scene,</if>
+            <if test="goal != null">goal,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="moral != null">moral,</if>
+            <if test="modelType != null">model_type,</if>
+            <if test="tokensUsed != null">tokens_used,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="childId != null">#{childId},</if>
+            <if test="age != null">#{age},</if>
+            <if test="scene != null">#{scene},</if>
+            <if test="goal != null">#{goal},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="moral != null">#{moral},</if>
+            <if test="modelType != null">#{modelType},</if>
+            <if test="tokensUsed != null">#{tokensUsed},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduStoryRecord" parameterType="EduStoryRecord">
+        update edu_story_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="childId != null">child_id = #{childId},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="scene != null">scene = #{scene},</if>
+            <if test="goal != null">goal = #{goal},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="moral != null">moral = #{moral},</if>
+            <if test="modelType != null">model_type = #{modelType},</if>
+            <if test="tokensUsed != null">tokens_used = #{tokensUsed},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEduStoryRecordById" parameterType="Long">
+        delete from edu_story_record where id = #{id}
+    </delete>
+
+    <delete id="deleteEduStoryRecordByIds" parameterType="String">
+        delete from edu_story_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

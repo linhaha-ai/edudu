@@ -1,5 +1,5 @@
 -- AI知识库文档表
-CREATE TABLE IF NOT EXISTS ai_knowledge_doc (
+CREATE TABLE IF NOT EXISTS edu_ai_knowledge_doc (
     id          BIGINT PRIMARY KEY AUTO_INCREMENT,
     title       VARCHAR(255) NOT NULL COMMENT '文档标题',
     content     TEXT NOT NULL COMMENT '文档内容',

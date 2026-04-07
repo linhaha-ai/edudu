@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edudu.edu.mapper.EduDailyTaskMapper">
+    
+    <resultMap type="com.edudu.edu.domain.EduDailyTask" id="EduDailyTaskResult">
+        <result property="id"    column="id"    />
+        <result property="ageMin"    column="age_min"    />
+        <result property="ageMax"    column="age_max"    />
+        <result property="theme"    column="theme"    />
+        <result property="title"    column="title"    />
+        <result property="goal"    column="goal"    />
+        <result property="steps"    column="steps"    />
+        <result property="tips"    column="tips"    />
+        <result property="duration"    column="duration"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEduDailyTaskVo">
+        select id, age_min, age_max, theme, title, goal, steps, tips, duration, status, create_by, create_time, update_by, update_time, remark from edu_daily_task
+    </sql>
+
+    <select id="selectEduDailyTaskList" parameterType="EduDailyTask" resultMap="EduDailyTaskResult">
+        <include refid="selectEduDailyTaskVo"/>
+        <where>  
+            <if test="ageMin != null "> and age_min = #{ageMin}</if>
+            <if test="ageMax != null "> and age_max = #{ageMax}</if>
+            <if test="theme != null  and theme != ''"> and theme = #{theme}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="goal != null  and goal != ''"> and goal = #{goal}</if>
+            <if test="steps != null  and steps != ''"> and steps = #{steps}</if>
+            <if test="tips != null  and tips != ''"> and tips = #{tips}</if>
+            <if test="duration != null  and duration != ''"> and duration = #{duration}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduDailyTaskById" parameterType="Long" resultMap="EduDailyTaskResult">
+        <include refid="selectEduDailyTaskVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEduDailyTask" parameterType="EduDailyTask" useGeneratedKeys="true" keyProperty="id">
+        insert into edu_daily_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ageMin != null">age_min,</if>
+            <if test="ageMax != null">age_max,</if>
+            <if test="theme != null">theme,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="goal != null">goal,</if>
+            <if test="steps != null and steps != ''">steps,</if>
+            <if test="tips != null">tips,</if>
+            <if test="duration != null">duration,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ageMin != null">#{ageMin},</if>
+            <if test="ageMax != null">#{ageMax},</if>
+            <if test="theme != null">#{theme},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="goal != null">#{goal},</if>
+            <if test="steps != null and steps != ''">#{steps},</if>
+            <if test="tips != null">#{tips},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduDailyTask" parameterType="EduDailyTask">
+        update edu_daily_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ageMin != null">age_min = #{ageMin},</if>
+            <if test="ageMax != null">age_max = #{ageMax},</if>
+            <if test="theme != null">theme = #{theme},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="goal != null">goal = #{goal},</if>
+            <if test="steps != null and steps != ''">steps = #{steps},</if>
+            <if test="tips != null">tips = #{tips},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEduDailyTaskById" parameterType="Long">
+        delete from edu_daily_task where id = #{id}
+    </delete>
+
+    <delete id="deleteEduDailyTaskByIds" parameterType="String">
+        delete from edu_daily_task where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

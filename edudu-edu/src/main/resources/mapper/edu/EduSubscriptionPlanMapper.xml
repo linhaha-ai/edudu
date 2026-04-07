@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edudu.edu.mapper.EduSubscriptionPlanMapper">
+    
+    <resultMap type="com.edudu.edu.domain.EduSubscriptionPlan" id="EduSubscriptionPlanResult">
+        <result property="id"    column="id"    />
+        <result property="planCode"    column="plan_code"    />
+        <result property="planName"    column="plan_name"    />
+        <result property="price"    column="price"    />
+        <result property="durationDays"    column="duration_days"    />
+        <result property="features"    column="features"    />
+        <result property="status"    column="status"    />
+        <result property="sort"    column="sort"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEduSubscriptionPlanVo">
+        select id, plan_code, plan_name, price, duration_days, features, status, sort, create_by, create_time, update_by, update_time, remark from edu_subscription_plan
+    </sql>
+
+    <select id="selectEduSubscriptionPlanList" parameterType="EduSubscriptionPlan" resultMap="EduSubscriptionPlanResult">
+        <include refid="selectEduSubscriptionPlanVo"/>
+        <where>  
+            <if test="planCode != null  and planCode != ''"> and plan_code = #{planCode}</if>
+            <if test="planName != null  and planName != ''"> and plan_name like concat('%', #{planName}, '%')</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="durationDays != null "> and duration_days = #{durationDays}</if>
+            <if test="features != null  and features != ''"> and features = #{features}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduSubscriptionPlanById" parameterType="Long" resultMap="EduSubscriptionPlanResult">
+        <include refid="selectEduSubscriptionPlanVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEduSubscriptionPlan" parameterType="EduSubscriptionPlan" useGeneratedKeys="true" keyProperty="id">
+        insert into edu_subscription_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planCode != null and planCode != ''">plan_code,</if>
+            <if test="planName != null and planName != ''">plan_name,</if>
+            <if test="price != null">price,</if>
+            <if test="durationDays != null">duration_days,</if>
+            <if test="features != null">features,</if>
+            <if test="status != null">status,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planCode != null and planCode != ''">#{planCode},</if>
+            <if test="planName != null and planName != ''">#{planName},</if>
+            <if test="price != null">#{price},</if>
+            <if test="durationDays != null">#{durationDays},</if>
+            <if test="features != null">#{features},</if>
+            <if test="status != null">#{status},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduSubscriptionPlan" parameterType="EduSubscriptionPlan">
+        update edu_subscription_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="planCode != null and planCode != ''">plan_code = #{planCode},</if>
+            <if test="planName != null and planName != ''">plan_name = #{planName},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="durationDays != null">duration_days = #{durationDays},</if>
+            <if test="features != null">features = #{features},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEduSubscriptionPlanById" parameterType="Long">
+        delete from edu_subscription_plan where id = #{id}
+    </delete>
+
+    <delete id="deleteEduSubscriptionPlanByIds" parameterType="String">
+        delete from edu_subscription_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

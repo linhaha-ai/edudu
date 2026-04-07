@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edudu.edu.mapper.EduFavoriteMapper">
+    
+    <resultMap type="com.edudu.edu.domain.EduFavorite" id="EduFavoriteResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="childId"    column="child_id"    />
+        <result property="type"    column="type"    />
+        <result property="sourceId"    column="source_id"    />
+        <result property="title"    column="title"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectEduFavoriteVo">
+        select id, user_id, child_id, type, source_id, title, create_by, create_time from edu_favorite
+    </sql>
+
+    <select id="selectEduFavoriteList" parameterType="EduFavorite" resultMap="EduFavoriteResult">
+        <include refid="selectEduFavoriteVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="childId != null "> and child_id = #{childId}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="sourceId != null "> and source_id = #{sourceId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduFavoriteById" parameterType="Long" resultMap="EduFavoriteResult">
+        <include refid="selectEduFavoriteVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEduFavorite" parameterType="EduFavorite" useGeneratedKeys="true" keyProperty="id">
+        insert into edu_favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="childId != null">child_id,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="sourceId != null">source_id,</if>
+            <if test="title != null">title,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="childId != null">#{childId},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="sourceId != null">#{sourceId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduFavorite" parameterType="EduFavorite">
+        update edu_favorite
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="childId != null">child_id = #{childId},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="sourceId != null">source_id = #{sourceId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEduFavoriteById" parameterType="Long">
+        delete from edu_favorite where id = #{id}
+    </delete>
+
+    <delete id="deleteEduFavoriteByIds" parameterType="String">
+        delete from edu_favorite where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

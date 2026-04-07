@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edudu.edu.mapper.EduDictGrowthTypeMapper">
+    
+    <resultMap type="com.edudu.edu.domain.EduDictGrowthType" id="EduDictGrowthTypeResult">
+        <result property="id"    column="id"    />
+        <result property="dictLabel"    column="dict_label"    />
+        <result property="dictValue"    column="dict_value"    />
+        <result property="dictUnit"    column="dict_unit"    />
+        <result property="dictSort"    column="dict_sort"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectEduDictGrowthTypeVo">
+        select id, dict_label, dict_value, dict_unit, dict_sort, status, create_by, create_time, update_by, update_time, remark from edu_dict_growth_type
+    </sql>
+
+    <select id="selectEduDictGrowthTypeList" parameterType="EduDictGrowthType" resultMap="EduDictGrowthTypeResult">
+        <include refid="selectEduDictGrowthTypeVo"/>
+        <where>  
+            <if test="dictLabel != null  and dictLabel != ''"> and dict_label = #{dictLabel}</if>
+            <if test="dictValue != null  and dictValue != ''"> and dict_value = #{dictValue}</if>
+            <if test="dictUnit != null  and dictUnit != ''"> and dict_unit = #{dictUnit}</if>
+            <if test="dictSort != null "> and dict_sort = #{dictSort}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduDictGrowthTypeById" parameterType="Long" resultMap="EduDictGrowthTypeResult">
+        <include refid="selectEduDictGrowthTypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEduDictGrowthType" parameterType="EduDictGrowthType" useGeneratedKeys="true" keyProperty="id">
+        insert into edu_dict_growth_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dictLabel != null">dict_label,</if>
+            <if test="dictValue != null">dict_value,</if>
+            <if test="dictUnit != null">dict_unit,</if>
+            <if test="dictSort != null">dict_sort,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dictLabel != null">#{dictLabel},</if>
+            <if test="dictValue != null">#{dictValue},</if>
+            <if test="dictUnit != null">#{dictUnit},</if>
+            <if test="dictSort != null">#{dictSort},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduDictGrowthType" parameterType="EduDictGrowthType">
+        update edu_dict_growth_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dictLabel != null">dict_label = #{dictLabel},</if>
+            <if test="dictValue != null">dict_value = #{dictValue},</if>
+            <if test="dictUnit != null">dict_unit = #{dictUnit},</if>
+            <if test="dictSort != null">dict_sort = #{dictSort},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEduDictGrowthTypeById" parameterType="Long">
+        delete from edu_dict_growth_type where id = #{id}
+    </delete>
+
+    <delete id="deleteEduDictGrowthTypeByIds" parameterType="String">
+        delete from edu_dict_growth_type where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

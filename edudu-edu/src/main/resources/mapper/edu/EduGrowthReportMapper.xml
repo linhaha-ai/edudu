@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edudu.edu.mapper.EduGrowthReportMapper">
+    
+    <resultMap type="com.edudu.edu.domain.EduGrowthReport" id="EduGrowthReportResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="childId"    column="child_id"    />
+        <result property="period"    column="period"    />
+        <result property="summary"    column="summary"    />
+        <result property="strengths"    column="strengths"    />
+        <result property="improvements"    column="improvements"    />
+        <result property="advice"    column="advice"    />
+        <result property="reportDate"    column="report_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectEduGrowthReportVo">
+        select id, user_id, child_id, period, summary, strengths, improvements, advice, report_date, create_by, create_time from edu_growth_report
+    </sql>
+
+    <select id="selectEduGrowthReportList" parameterType="EduGrowthReport" resultMap="EduGrowthReportResult">
+        <include refid="selectEduGrowthReportVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="childId != null "> and child_id = #{childId}</if>
+            <if test="period != null  and period != ''"> and period = #{period}</if>
+            <if test="summary != null  and summary != ''"> and summary = #{summary}</if>
+            <if test="strengths != null  and strengths != ''"> and strengths = #{strengths}</if>
+            <if test="improvements != null  and improvements != ''"> and improvements = #{improvements}</if>
+            <if test="advice != null  and advice != ''"> and advice = #{advice}</if>
+            <if test="reportDate != null "> and report_date = #{reportDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduGrowthReportById" parameterType="Long" resultMap="EduGrowthReportResult">
+        <include refid="selectEduGrowthReportVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEduGrowthReport" parameterType="EduGrowthReport" useGeneratedKeys="true" keyProperty="id">
+        insert into edu_growth_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="childId != null">child_id,</if>
+            <if test="period != null">period,</if>
+            <if test="summary != null">summary,</if>
+            <if test="strengths != null">strengths,</if>
+            <if test="improvements != null">improvements,</if>
+            <if test="advice != null">advice,</if>
+            <if test="reportDate != null">report_date,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="childId != null">#{childId},</if>
+            <if test="period != null">#{period},</if>
+            <if test="summary != null">#{summary},</if>
+            <if test="strengths != null">#{strengths},</if>
+            <if test="improvements != null">#{improvements},</if>
+            <if test="advice != null">#{advice},</if>
+            <if test="reportDate != null">#{reportDate},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduGrowthReport" parameterType="EduGrowthReport">
+        update edu_growth_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="childId != null">child_id = #{childId},</if>
+            <if test="period != null">period = #{period},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="strengths != null">strengths = #{strengths},</if>
+            <if test="improvements != null">improvements = #{improvements},</if>
+            <if test="advice != null">advice = #{advice},</if>
+            <if test="reportDate != null">report_date = #{reportDate},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEduGrowthReportById" parameterType="Long">
+        delete from edu_growth_report where id = #{id}
+    </delete>
+
+    <delete id="deleteEduGrowthReportByIds" parameterType="String">
+        delete from edu_growth_report where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

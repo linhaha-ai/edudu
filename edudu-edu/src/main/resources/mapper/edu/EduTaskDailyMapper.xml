@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edudu.edu.mapper.EduTaskDailyMapper">
+    
+    <resultMap type="com.edudu.edu.domain.EduTaskDaily" id="EduTaskDailyResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="childId"    column="child_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="title"    column="title"    />
+        <result property="goal"    column="goal"    />
+        <result property="steps"    column="steps"    />
+        <result property="tips"    column="tips"    />
+        <result property="duration"    column="duration"    />
+        <result property="taskDate"    column="task_date"    />
+        <result property="status"    column="status"    />
+        <result property="completedAt"    column="completed_at"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectEduTaskDailyVo">
+        select id, user_id, child_id, task_id, title, goal, steps, tips, duration, task_date, status, completed_at, create_by, create_time, update_by, update_time from edu_task_daily
+    </sql>
+
+    <select id="selectEduTaskDailyList" parameterType="EduTaskDaily" resultMap="EduTaskDailyResult">
+        <include refid="selectEduTaskDailyVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="childId != null "> and child_id = #{childId}</if>
+            <if test="taskId != null "> and task_id = #{taskId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="goal != null  and goal != ''"> and goal = #{goal}</if>
+            <if test="steps != null  and steps != ''"> and steps = #{steps}</if>
+            <if test="tips != null  and tips != ''"> and tips = #{tips}</if>
+            <if test="duration != null  and duration != ''"> and duration = #{duration}</if>
+            <if test="taskDate != null "> and task_date = #{taskDate}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="completedAt != null "> and completed_at = #{completedAt}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduTaskDailyById" parameterType="Long" resultMap="EduTaskDailyResult">
+        <include refid="selectEduTaskDailyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEduTaskDaily" parameterType="EduTaskDaily" useGeneratedKeys="true" keyProperty="id">
+        insert into edu_task_daily
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="childId != null">child_id,</if>
+            <if test="taskId != null">task_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="goal != null">goal,</if>
+            <if test="steps != null">steps,</if>
+            <if test="tips != null">tips,</if>
+            <if test="duration != null">duration,</if>
+            <if test="taskDate != null">task_date,</if>
+            <if test="status != null">status,</if>
+            <if test="completedAt != null">completed_at,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="childId != null">#{childId},</if>
+            <if test="taskId != null">#{taskId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="goal != null">#{goal},</if>
+            <if test="steps != null">#{steps},</if>
+            <if test="tips != null">#{tips},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="taskDate != null">#{taskDate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="completedAt != null">#{completedAt},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduTaskDaily" parameterType="EduTaskDaily">
+        update edu_task_daily
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="childId != null">child_id = #{childId},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="goal != null">goal = #{goal},</if>
+            <if test="steps != null">steps = #{steps},</if>
+            <if test="tips != null">tips = #{tips},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="taskDate != null">task_date = #{taskDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="completedAt != null">completed_at = #{completedAt},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEduTaskDailyById" parameterType="Long">
+        delete from edu_task_daily where id = #{id}
+    </delete>
+
+    <delete id="deleteEduTaskDailyByIds" parameterType="String">
+        delete from edu_task_daily where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
