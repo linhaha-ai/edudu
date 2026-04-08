@@ -50,6 +50,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectEduUserVo"/>
         where user_id = #{userId}
     </select>
+    
+    <select id="selectEduUserByPhone" parameterType="String" resultMap="EduUserResult">
+        <include refid="selectEduUserVo"/>
+        where phone = #{phone}
+    </select>
 
     <insert id="insertEduUser" parameterType="EduUser" useGeneratedKeys="true" keyProperty="userId">
         insert into edu_user

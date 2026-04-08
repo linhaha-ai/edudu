@@ -20,6 +20,14 @@ public interface EduUserMapper
     public EduUser selectEduUserByUserId(Long userId);
 
     /**
+     * 根据手机号查询前端用户
+     * 
+     * @param phone 手机号
+     * @return 前端用户
+     */
+    public EduUser selectEduUserByPhone(String phone);
+
+    /**
      * 查询前端用户列表
      * 
      * @param eduUser 前端用户

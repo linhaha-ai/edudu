@@ -58,4 +58,30 @@ public interface IEduUserService
      * @return 结果
      */
     public int deleteEduUserByUserId(Long userId);
+
+    /**
+     * 根据手机号查询前端用户
+     * 
+     * @param phone 手机号
+     * @return 前端用户
+     */
+    public EduUser selectEduUserByPhone(String phone);
+
+    /**
+     * 检查手机号是否唯一
+     * 
+     * @param phone 手机号
+     * @return true=唯一 false=不唯一
+     */
+    public boolean checkPhoneUnique(String phone);
+
+    /**
+     * 更新用户登录信息
+     * 
+     * @param userId 用户ID
+     * @param loginIp 登录IP
+     * @param loginDate 登录时间
+     * @return 结果
+     */
+    public int updateLoginInfo(Long userId, String loginIp, java.util.Date loginDate);
 }
