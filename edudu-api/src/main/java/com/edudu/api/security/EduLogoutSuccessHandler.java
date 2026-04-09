@@ -29,7 +29,7 @@ public class EduLogoutSuccessHandler implements LogoutSuccessHandler
     public void onLogoutSuccess(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException
     {
-        EduLoginUser loginUser = eduTokenService.getLoginUser(request);
+        com.edudu.common.core.domain.model.EduLoginUser loginUser = eduTokenService.getLoginUser(request);
         if (loginUser != null)
         {
             // 删除用户缓存记录

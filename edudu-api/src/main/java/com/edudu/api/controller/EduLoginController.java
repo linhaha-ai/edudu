@@ -1,5 +1,6 @@
 package com.edudu.api.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,13 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.edudu.api.dto.EduLoginBody;
 import com.edudu.api.dto.EduLoginUserVo;
 import com.edudu.api.dto.EduRegisterBody;
-import com.edudu.api.security.EduLoginUser;
+import com.edudu.common.core.domain.model.EduLoginUser;
 import com.edudu.api.service.EduLoginService;
-import com.edudu.api.service.EduTokenService;
 import com.edudu.common.constant.Constants;
 import com.edudu.common.core.domain.AjaxResult;
 import com.edudu.common.utils.SecurityUtils;
-import com.edudu.edu.domain.EduUser;
+import com.edudu.common.core.domain.entity.EduUser;
 
 /**
  * API用户登录控制器
@@ -24,13 +24,11 @@ import com.edudu.edu.domain.EduUser;
  */
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "API用户登录接口")
 public class EduLoginController
 {
     @Autowired
     private EduLoginService eduLoginService;
-
-    @Autowired
-    private EduTokenService eduTokenService;
 
     /**
      * 登录方法
@@ -72,10 +70,10 @@ public class EduLoginController
     @GetMapping("/info")
     public AjaxResult getInfo()
     {
-        EduLoginUser loginUser = SecurityUtils.getLoginUser();
-        if (loginUser instanceof EduLoginUser)
+        EduLoginUser loginUser = SecurityUtils.getAppLoginUser();
+        if (loginUser != null)
         {
-            EduUser user = ((EduLoginUser) loginUser).getUser();
+            EduUser user = loginUser.getUser();
             EduLoginUserVo userVo = new EduLoginUserVo();
             userVo.setUserId(user.getUserId());
             userVo.setPhone(user.getPhone());

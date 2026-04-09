@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,12 +20,13 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/ai/knowledge")
+@RequestMapping("/ai/knowledge")
 @RequiredArgsConstructor
 @Tag(name = "知识库管理接口")
 public class KnowledgeController {
 
-    private final KnowledgeService knowledgeService;
+    @Autowired
+    KnowledgeService knowledgeService;
 
     /**
      * 导入知识文档

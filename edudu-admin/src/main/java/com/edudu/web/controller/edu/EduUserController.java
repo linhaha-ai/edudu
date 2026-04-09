@@ -16,7 +16,7 @@ import com.edudu.common.annotation.Log;
 import com.edudu.common.core.controller.BaseController;
 import com.edudu.common.core.domain.AjaxResult;
 import com.edudu.common.enums.BusinessType;
-import com.edudu.edu.domain.EduUser;
+import com.edudu.common.core.domain.entity.EduUser;
 import com.edudu.edu.service.IEduUserService;
 import com.edudu.common.utils.poi.ExcelUtil;
 import com.edudu.common.core.page.TableDataInfo;

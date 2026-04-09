@@ -1,15 +1,16 @@
-package com.edudu.api.security;
+package com.edudu.common.core.domain.model;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.edudu.common.core.domain.entity.EduUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.alibaba.fastjson2.annotation.JSONField;
-import com.edudu.edu.domain.EduUser;
 
 /**
  * API用户登录身份权限

@@ -3,6 +3,8 @@ package com.edudu.common.utils;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.edudu.common.core.domain.model.EduLoginUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -74,6 +76,20 @@ public class SecurityUtils
         try
         {
             return (LoginUser) getAuthentication().getPrincipal();
+        }
+        catch (Exception e)
+        {
+            throw new ServiceException("获取用户信息异常", HttpStatus.UNAUTHORIZED);
+        }
+    }
+    /**
+     * 获取APP用户
+     **/
+    public static EduLoginUser getAppLoginUser()
+    {
+        try
+        {
+            return (EduLoginUser) getAuthentication().getPrincipal();
         }
         catch (Exception e)
         {

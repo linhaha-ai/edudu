@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.edudu.api.security.EduLoginUser;
+import com.edudu.common.core.domain.model.EduLoginUser;
 import com.edudu.common.constant.CacheConstants;
 import com.edudu.common.constant.Constants;
 import com.edudu.common.core.redis.RedisCache;

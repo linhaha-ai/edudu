@@ -1,6 +1,7 @@
 package com.edudu.ai.config;
 
 import com.edudu.ai.memory.RedisChatMemoryStore;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +11,10 @@ import org.springframework.data.redis.core.StringRedisTemplate;
  * RAG 配置类
  */
 @Configuration
+@Getter
 public class RagConfig {
 
+    // Getter 方法供外部使用
     @Value("${langchain4j.ai.rag.top-k:3}")
     private int topK;
 
@@ -36,30 +39,5 @@ public class RagConfig {
     @Bean
     public RedisChatMemoryStore redisChatMemoryStore(StringRedisTemplate redisTemplate) {
         return new RedisChatMemoryStore(redisTemplate);
-    }
-
-    // Getter 方法供外部使用
-    public int getTopK() {
-        return topK;
-    }
-
-    public double getMinScore() {
-        return minScore;
-    }
-
-    public int getChunkSize() {
-        return chunkSize;
-    }
-
-    public int getChunkOverlap() {
-        return chunkOverlap;
-    }
-
-    public String getEmbeddingFile() {
-        return embeddingFile;
-    }
-
-    public int getMaxMessages() {
-        return maxMessages;
     }
 }

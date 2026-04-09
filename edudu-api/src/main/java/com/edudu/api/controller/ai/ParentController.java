@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/parent")
+@RequestMapping("/parent")
 @RequiredArgsConstructor
 @Tag(name = "AI家长助手接口")
 public class ParentController {

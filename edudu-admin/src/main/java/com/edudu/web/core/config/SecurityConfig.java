@@ -1,4 +1,4 @@
-package com.edudu.framework.config;
+package com.edudu.web.core.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

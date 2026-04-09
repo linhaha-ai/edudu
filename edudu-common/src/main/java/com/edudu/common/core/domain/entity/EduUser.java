@@ -1,4 +1,4 @@
-package com.edudu.edu.domain;
+package com.edudu.common.core.domain.entity;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;

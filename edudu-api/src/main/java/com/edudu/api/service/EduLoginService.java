@@ -7,15 +7,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import com.edudu.api.dto.EduRegisterBody;
-import com.edudu.api.security.EduLoginUser;
-import com.edudu.common.constant.Constants;
+import com.edudu.common.core.domain.model.EduLoginUser;
 import com.edudu.common.constant.UserConstants;
 import com.edudu.common.exception.ServiceException;
 import com.edudu.common.utils.DateUtils;
 import com.edudu.common.utils.MessageUtils;
 import com.edudu.common.utils.StringUtils;
 import com.edudu.common.utils.ip.IpUtils;
-import com.edudu.edu.domain.EduUser;
+import com.edudu.common.core.domain.entity.EduUser;
 import com.edudu.edu.service.IEduUserService;
 
 /**

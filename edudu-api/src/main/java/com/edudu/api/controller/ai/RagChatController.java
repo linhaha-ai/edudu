@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/ai/chat")
+@RequestMapping("/ai/chat")
 @RequiredArgsConstructor
 @Tag(name = "AI对话接口")
 public class RagChatController {

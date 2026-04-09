@@ -7,6 +7,8 @@ import com.edudu.ai.domain.KnowledgeDocument;
 import com.edudu.ai.memory.RedisChatMemoryStore;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,26 +23,45 @@ import java.util.UUID;
 @Service
 public class RagAiService {
 
-    private final ChatLanguageModel chatLanguageModel;
+    @Lazy
+    @Autowired(required = false)
+    private ChatLanguageModel chatLanguageModel;
+    
     private final RagConfig ragConfig;
     private final KnowledgeService knowledgeService;
     private final RedisChatMemoryStore memoryStore;
 
     public RagAiService(
-            ChatLanguageModel chatLanguageModel,
             RagConfig ragConfig,
             KnowledgeService knowledgeService,
             RedisChatMemoryStore memoryStore) {
-        this.chatLanguageModel = chatLanguageModel;
         this.ragConfig = ragConfig;
         this.knowledgeService = knowledgeService;
         this.memoryStore = memoryStore;
+    }
+    
+    /**
+     * 检查AI功能是否可用
+     */
+    private boolean isAiAvailable() {
+        return chatLanguageModel != null;
     }
 
     /**
      * 同步对话
      */
     public ChatResponse chat(ChatRequest request) {
+        // 检查AI是否可用
+        if (!isAiAvailable()) {
+            log.warn("ChatLanguageModel bean 未配置，AI功能不可用");
+            return new ChatResponse(
+                    "AI功能暂时不可用，请联系管理员配置AI服务。",
+                    request.getConversationId(),
+                    List.of(),
+                    LocalDateTime.now()
+            );
+        }
+        
         String conversationId = request.getConversationId();
         if (conversationId == null || conversationId.isEmpty()) {
             conversationId = UUID.randomUUID().toString();

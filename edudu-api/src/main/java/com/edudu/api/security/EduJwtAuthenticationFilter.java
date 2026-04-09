@@ -31,7 +31,7 @@ public class EduJwtAuthenticationFilter extends OncePerRequestFilter
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws ServletException, IOException
     {
-        EduLoginUser loginUser = eduTokenService.getLoginUser(request);
+        com.edudu.common.core.domain.model.EduLoginUser loginUser = eduTokenService.getLoginUser(request);
         if (StringUtils.isNotNull(loginUser) && StringUtils.isNull(SecurityUtils.getAuthentication()))
         {
             eduTokenService.verifyToken(loginUser);

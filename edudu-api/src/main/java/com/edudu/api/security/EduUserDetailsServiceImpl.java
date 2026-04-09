@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.edudu.common.exception.ServiceException;
 import com.edudu.common.utils.MessageUtils;
 import com.edudu.common.utils.StringUtils;
-import com.edudu.edu.domain.EduUser;
+import com.edudu.common.core.domain.entity.EduUser;
 import com.edudu.edu.service.IEduUserService;
 
 import java.util.Collections;
@@ -55,6 +55,6 @@ public class EduUserDetailsServiceImpl implements UserDetailsService
     public UserDetails createLoginUser(EduUser user)
     {
         // API用户默认权限集合
-        return new EduLoginUser(user, Collections.singleton("app:user"));
+        return new com.edudu.common.core.domain.model.EduLoginUser(user, Collections.singleton("app:user"));
     }
 }

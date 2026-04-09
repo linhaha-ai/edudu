@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edudu.edu.mapper.EduUserMapper">
     
-    <resultMap type="com.edudu.edu.domain.EduUser" id="EduUserResult">
+    <resultMap type="com.edudu.common.core.domain.entity.EduUser" id="EduUserResult">
         <result property="userId"    column="user_id"    />
         <result property="unionId"    column="union_id"    />
         <result property="openId"    column="open_id"    />

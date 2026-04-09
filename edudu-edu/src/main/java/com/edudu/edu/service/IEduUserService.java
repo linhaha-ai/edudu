@@ -1,7 +1,7 @@
 package com.edudu.edu.service;
 
 import java.util.List;
-import com.edudu.edu.domain.EduUser;
+import com.edudu.common.core.domain.entity.EduUser;
 
 /**
  * 前端用户Service接口

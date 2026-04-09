@@ -7,7 +7,7 @@ import com.edudu.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.edudu.edu.mapper.EduUserMapper;
-import com.edudu.edu.domain.EduUser;
+import com.edudu.common.core.domain.entity.EduUser;
 import com.edudu.edu.service.IEduUserService;
 
 /**
