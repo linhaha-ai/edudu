@@ -25,7 +25,7 @@ export interface ParentAnswer {
  * 提交问题
  */
 export const submitQuestion = (params: { childId: number; question: string }) => {
-  return post<ApiResponse<{ question: ParentQuestion; answer: ParentAnswer }>>('/api/parent/question', params)
+  return post<ApiResponse<{ question: ParentQuestion; answer: ParentAnswer }>>('/parent/question', params)
 }
 
 /**
@@ -33,7 +33,7 @@ export const submitQuestion = (params: { childId: number; question: string }) =>
  */
 export const getQuestionHistory = (params?: { page?: number; pageSize?: number }) => {
   return get<ApiResponse<{ list: (ParentQuestion & { answer: ParentAnswer })[]; total: number }>>(
-    '/api/parent/history',
+    '/parent/history',
     params
   )
 }
@@ -42,5 +42,5 @@ export const getQuestionHistory = (params?: { page?: number; pageSize?: number }
  * 获取问答详情
  */
 export const getQuestionDetail = (id: number) => {
-  return get<ApiResponse<ParentQuestion & { answer: ParentAnswer }>>(`/api/parent/question/${id}`)
+  return get<ApiResponse<ParentQuestion & { answer: ParentAnswer }>>(`/parent/question/${id}`)
 }

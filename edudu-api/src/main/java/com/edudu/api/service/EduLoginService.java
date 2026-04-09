@@ -121,7 +121,6 @@ public class EduLoginService {
         // 创建登录用户
         EduLoginUser loginUser = new EduLoginUser();
         loginUser.setUser(user);
-        loginUser.setUsername(phone);
         loginUser.setUserId(user.getUserId());
 
         recordLoginInfo(user.getUserId());
@@ -164,7 +163,6 @@ public class EduLoginService {
 
         EduLoginUser loginUser = new EduLoginUser();
         loginUser.setUser(user);
-        loginUser.setUsername(user.getPhone() != null ? user.getPhone() : openid);
         loginUser.setUserId(user.getUserId());
 
         recordLoginInfo(user.getUserId());

@@ -1,9 +1,17 @@
 {
+  "uniIdRouter": {},
   "pages": [
     {
       "path": "pages/user/login",
       "style": {
         "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/user/register",
+      "style": {
+        "navigationBarTitleText": "注册",
         "navigationStyle": "custom"
       }
     },

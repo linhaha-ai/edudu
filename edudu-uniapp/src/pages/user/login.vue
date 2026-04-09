@@ -49,13 +49,17 @@
         登录
       </button>
 
+      <!-- #ifdef H5 -->
+      <!-- H5 平台不显示微信登录 -->
+      <!-- #endif -->
+
+      <!-- #ifdef MP-WEIXIN -->
       <!-- 微信登录 -->
-      #ifdef MP-WEIXIN
       <button class="btn btn-default btn-block wechat-btn" @click="handleWechatLogin">
         <image class="wechat-icon" src="/static/images/wechat.png" />
         微信一键登录
       </button>
-      #endif
+      <!-- #endif -->
     </view>
 
     <!-- 用户协议 -->
@@ -71,6 +75,12 @@
           </text>
         </label>
       </checkbox-group>
+    </view>
+
+    <!-- 注册入口 -->
+    <view class="register-entry">
+      还没有账号？
+      <text class="link" @click="goRegister">立即注册</text>
     </view>
   </view>
 </template>
@@ -139,9 +149,9 @@ const handleLogin = async () => {
   }
 }
 
-// 微信登录
+// 微信登录 - 仅在小程序环境可用
+// #ifdef MP-WEIXIN
 const handleWechatLogin = () => {
-  // #ifdef MP-WEIXIN
   uni.getUserProfile({
     desc: '用于完善用户资料',
     success: async (res) => {
@@ -164,8 +174,14 @@ const handleWechatLogin = () => {
       showError('获取用户信息失败')
     },
   })
-  // #endif
 }
+// #endif
+// #ifndef MP-WEIXIN
+const handleWechatLogin = () => {
+  // H5 等其他平台不支持微信登录
+  showError('请使用手机号登录')
+}
+// #endif
 
 // 同意协议
 const handleAgreementChange = (e: any) => {
@@ -176,6 +192,11 @@ const handleAgreementChange = (e: any) => {
 const openAgreement = (type: 'user' | 'privacy') => {
   const url = type === 'user' ? '/pages/webview?url=xxx' : '/pages/webview?url=xxx'
   uni.navigateTo({ url })
+}
+
+// 跳转到注册
+const goRegister = () => {
+  uni.navigateTo({ url: '/pages/user/register' })
 }
 </script>
 
@@ -321,5 +342,12 @@ const openAgreement = (type: 'user' | 'privacy') => {
 
 .link {
   color: #3B82F6;
+}
+
+.register-entry {
+  margin-top: 32rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #6B7280;
 }
 </style>

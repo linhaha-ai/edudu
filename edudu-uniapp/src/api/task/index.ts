@@ -30,28 +30,28 @@ export interface TaskRecord {
  * 获取今日任务
  */
 export const getTodayTasks = (childId: number) => {
-  return get<ApiResponse<DailyTask[]>>('/api/task/today', { childId })
+  return get<ApiResponse<DailyTask[]>>('/task/today', { childId })
 }
 
 /**
  * 获取任务详情
  */
 export const getTaskDetail = (id: number) => {
-  return get<ApiResponse<DailyTask>>(`/api/task/${id}`)
+  return get<ApiResponse<DailyTask>>(`/task/${id}`)
 }
 
 /**
  * 完成任务
  */
 export const completeTask = (id: number, note?: string) => {
-  return post<ApiResponse<null>>(`/api/task/${id}/complete`, { note })
+  return post<ApiResponse<null>>(`/task/${id}/complete`, { note })
 }
 
 /**
  * 获取任务统计
  */
 export const getTaskStats = (childId: number) => {
-  return get<ApiResponse<TaskStatsData>>('/api/task/stats', { childId })
+  return get<ApiResponse<TaskStatsData>>('/task/stats', { childId })
 }
 
 export interface TaskStatsData {

@@ -3,8 +3,8 @@
  */
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { getUserInfo, loginBySms, sendSmsCode, loginByWechat, logout } from '@/api/user'
-import type { UserInfo, LoginParams, SmsParams } from '@/api/user/types'
+import { getUserInfo, loginBySms, sendSmsCode, loginByWechat, logout, register as registerApi } from '@/api/user'
+import type { UserInfo, LoginParams, SmsParams, RegisterParams } from '@/api/user/types'
 
 export const useUserStore = defineStore(
   'user',
@@ -112,6 +112,24 @@ export const useUserStore = defineStore(
     }
 
     /**
+     * 用户注册
+     */
+    const register = async (params: RegisterParams) => {
+      isLoading.value = true
+      try {
+        const res = await registerApi(params)
+        if (res.code === 200) {
+          setToken(res.data.token)
+          await fetchUserInfo()
+          return true
+        }
+        return false
+      } finally {
+        isLoading.value = false
+      }
+    }
+
+    /**
      * 退出登录
      */
     const logoutAction = async () => {
@@ -150,6 +168,7 @@ export const useUserStore = defineStore(
       loginWithSms,
       sendSms,
       loginWithWechat,
+      register,
       logoutAction,
       clearLogin,
     }

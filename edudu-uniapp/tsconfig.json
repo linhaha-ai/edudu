@@ -1,5 +1,4 @@
 {
-  "extends": "@dcloudio/uni-app/types/tsconfig.json",
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -19,8 +18,7 @@
       "@/*": ["src/*"]
     },
     "types": [
-      "@dcloudio/types",
-      "@types/weixin-app"
+      "@dcloudio/types"
     ]
   },
   "include": [

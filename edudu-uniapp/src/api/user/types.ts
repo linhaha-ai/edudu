@@ -35,6 +35,15 @@ export interface WechatLoginParams {
   iv?: string
 }
 
+export interface RegisterParams {
+  phone: string
+  code: string
+  password: string
+  childName: string
+  gender: 'boy' | 'girl'
+  birthday: string
+}
+
 export interface ApiResponse<T = any> {
   code: number
   data: T

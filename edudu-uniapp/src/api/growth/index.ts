@@ -44,7 +44,7 @@ export const getGrowthRecords = (
   childId: number,
   params?: { type?: RecordType; page?: number; pageSize?: number }
 ) => {
-  return get<ApiResponse<{ list: GrowthRecord[]; total: number }>>('/api/growth/records', {
+  return get<ApiResponse<{ list: GrowthRecord[]; total: number }>>('/growth/records', {
     childId,
     ...params,
   })
@@ -54,28 +54,28 @@ export const getGrowthRecords = (
  * 添加成长记录
  */
 export const addGrowthRecord = (params: Omit<GrowthRecord, 'id' | 'createdAt'>) => {
-  return post<ApiResponse<GrowthRecord>>('/api/growth/record/add', params)
+  return post<ApiResponse<GrowthRecord>>('/growth/record/add', params)
 }
 
 /**
  * 更新成长记录
  */
 export const updateGrowthRecord = (id: number, params: Partial<GrowthRecord>) => {
-  return post<ApiResponse<null>>(`/api/growth/record/${id}/update`, params)
+  return post<ApiResponse<null>>(`/growth/record/${id}/update`, params)
 }
 
 /**
  * 删除成长记录
  */
 export const deleteGrowthRecord = (id: number) => {
-  return post<ApiResponse<null>>(`/api/growth/record/${id}/delete`)
+  return post<ApiResponse<null>>(`/growth/record/${id}/delete`)
 }
 
 /**
  * 获取成长统计
  */
 export const getGrowthStats = (childId: number, period: 'week' | 'month' = 'week') => {
-  return get<ApiResponse<GrowthStatsData>>('/api/growth/stats', { childId, period })
+  return get<ApiResponse<GrowthStatsData>>('/growth/stats', { childId, period })
 }
 
 export interface GrowthStatsData {
@@ -89,12 +89,12 @@ export interface GrowthStatsData {
  * 生成 AI 成长报告
  */
 export const generateGrowthReport = (childId: number, period: 'week' | 'month') => {
-  return post<ApiResponse<GrowthReport>>('/api/growth/report/generate', { childId, period })
+  return post<ApiResponse<GrowthReport>>('/growth/report/generate', { childId, period })
 }
 
 /**
  * 获取成长报告
  */
 export const getGrowthReports = (childId: number) => {
-  return get<ApiResponse<GrowthReport[]>>('/api/growth/reports', { childId })
+  return get<ApiResponse<GrowthReport[]>>('/growth/reports', { childId })
 }

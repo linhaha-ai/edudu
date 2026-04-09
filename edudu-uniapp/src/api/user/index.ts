@@ -2,46 +2,53 @@
  * 用户 API
  */
 import { get, post } from '../request'
-import type { UserInfo, LoginParams, SmsParams, WechatLoginParams } from './types'
+import type { UserInfo, LoginParams, SmsParams, WechatLoginParams, RegisterParams } from './types'
 
 /**
  * 获取用户信息
  */
 export const getUserInfo = () => {
-  return get<{ code: number; data: UserInfo; message: string }>('/api/user/info')
+  return get<{ code: number; data: UserInfo; message: string }>('/user/info')
 }
 
 /**
  * 发送验证码
  */
 export const sendSmsCode = (params: SmsParams) => {
-  return post<{ code: number; message: string }>('/api/sms/send', params)
+  return post<{ code: number; message: string }>('/sms/send', params)
 }
 
 /**
  * 短信登录
  */
 export const loginBySms = (params: LoginParams) => {
-  return post<{ code: number; data: { token: string }; message: string }>('/api/auth/login/sms', params)
+  return post<{ code: number; data: { token: string }; message: string }>('/auth/login/sms', params)
+}
+
+/**
+ * 用户注册
+ */
+export const register = (params: RegisterParams) => {
+  return post<{ code: number; data: { token: string }; message: string }>('/auth/register', params)
 }
 
 /**
  * 微信登录
  */
 export const loginByWechat = (params: WechatLoginParams) => {
-  return post<{ code: number; data: { token: string }; message: string }>('/api/auth/login/wechat', params)
+  return post<{ code: number; data: { token: string }; message: string }>('/auth/login/wechat', params)
 }
 
 /**
  * 退出登录
  */
 export const logout = () => {
-  return post<{ code: number; message: string }>('/api/auth/logout')
+  return post<{ code: number; message: string }>('/auth/logout')
 }
 
 /**
  * 更新用户信息
  */
 export const updateUserInfo = (params: Partial<UserInfo>) => {
-  return post<{ code: number; message: string }>('/api/user/update', params)
+  return post<{ code: number; message: string }>('/user/update', params)
 }

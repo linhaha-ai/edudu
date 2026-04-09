@@ -1,5 +1,6 @@
 package com.edudu.api.controller;
 
+import com.edudu.common.constant.CacheConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,6 +21,8 @@ import com.edudu.common.utils.SecurityUtils;
 import com.edudu.common.utils.StringUtils;
 import com.edudu.common.core.redis.RedisCache;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * API用户登录控制器
  * 
@@ -37,7 +40,7 @@ public class EduLoginController {
     private RedisCache redisCache;
 
     private static final String SMS_CODE_KEY = "sms:code:";
-    private static final long SMS_EXPIRE_TIME = 5; // 5分钟
+    private static final int SMS_EXPIRE_TIME = 5; // 5分钟
 
     /**
      * 密码登录
@@ -83,9 +86,9 @@ public class EduLoginController {
         // 这里模拟：存储到Redis，验证码为 "888888"（方便测试）
         String cacheKey = SMS_CODE_KEY + phone;
         if ("register".equals(type)) {
-            redisCache.setCacheObject(cacheKey + ":register", code, SMS_EXPIRE_TIME, java.util.concurrent.TimeUnit.MINUTES);
+            redisCache.setCacheObject(cacheKey + ":register", code, SMS_EXPIRE_TIME, TimeUnit.MINUTES);
         } else {
-            redisCache.setCacheObject(cacheKey, code, SMS_EXPIRE_TIME, java.util.concurrent.TimeUnit.MINUTES);
+            redisCache.setCacheObject(cacheKey, code, SMS_EXPIRE_TIME, TimeUnit.MINUTES);
         }
 
         // 模拟发送成功
@@ -149,7 +152,7 @@ public class EduLoginController {
         if (loginUser != null) {
             String token = loginUser.getToken();
             // 删除Redis中的token
-            redisCache.deleteObject(Constants.EDU_LOGIN_TOKEN_KEY + token);
+            redisCache.deleteObject(CacheConstants.EDU_LOGIN_TOKEN_KEY + token);
         }
         return AjaxResult.success("退出成功");
     }
