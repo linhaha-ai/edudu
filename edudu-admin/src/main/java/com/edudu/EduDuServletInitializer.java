@@ -14,6 +14,6 @@ public class EduDuServletInitializer extends SpringBootServletInitializer
     @Override
     protected @NonNull SpringApplicationBuilder configure(SpringApplicationBuilder application)
     {
-        return application.sources(EduDuApplication.class);
+        return application.sources(AdminApplication.class);
     }
 }

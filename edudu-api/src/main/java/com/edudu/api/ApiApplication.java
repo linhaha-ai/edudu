@@ -10,10 +10,10 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.edudu"})
-public class EduApiApplication {
+public class ApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EduApiApplication.class, args);
+        SpringApplication.run(ApiApplication.class, args);
         System.out.println("""
                 ╔════════════════════════════════════════════════════════════════════╗
                 ║                                                                    ║

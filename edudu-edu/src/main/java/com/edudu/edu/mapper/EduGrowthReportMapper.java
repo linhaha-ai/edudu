@@ -58,4 +58,9 @@ public interface EduGrowthReportMapper
      * @return 结果
      */
     public int deleteEduGrowthReportByIds(Long[] ids);
+
+    /**
+     * 根据孩子ID查询成长报告列表
+     */
+    public List<EduGrowthReport> selectEduGrowthReportListByChildId(Long childId);
 }

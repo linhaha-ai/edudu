@@ -88,8 +88,15 @@ public class EduGrowthReportServiceImpl implements IEduGrowthReportService
      * @return 结果
      */
     @Override
-    public int deleteEduGrowthReportById(Long id)
-    {
+    public int deleteEduGrowthReportById(Long id) {
         return eduGrowthReportMapper.deleteEduGrowthReportById(id);
+    }
+
+    /**
+     * 根据孩子ID查询成长报告列表
+     */
+    @Override
+    public List<EduGrowthReport> selectEduGrowthReportListByChildId(Long childId) {
+        return eduGrowthReportMapper.selectEduGrowthReportListByChildId(childId);
     }
 }

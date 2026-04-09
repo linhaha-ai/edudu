@@ -16,6 +16,7 @@ create table edu_user (
   avatar            varchar(255)    default ''                  comment '头像',
   gender            char(1)         default '0'                 comment '性别（0未知 1男 2女）',
   birthday          date            default null                comment '生日',
+  parent_id         bigint(20)      default null                comment '家长用户ID（关联父账户）',
   password          varchar(100)    default ''                  comment '密码（可选，手机号登录可为空）',
   status            char(1)         default '0'                comment '状态（0正常 1禁用）',
   del_flag          char(1)         default '0'                comment '删除标志（0存在 2删除）',

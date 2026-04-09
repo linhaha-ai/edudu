@@ -81,4 +81,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <delete id="deleteEduFavoriteBySourceId">
+        delete from edu_favorite where user_id = #{userId} and type = #{type} and source_id = #{sourceId}
+    </delete>
 </mapper>

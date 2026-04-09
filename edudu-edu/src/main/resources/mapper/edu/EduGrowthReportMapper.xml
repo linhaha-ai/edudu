@@ -96,4 +96,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectEduGrowthReportListByChildId" parameterType="Long" resultMap="EduGrowthReportResult">
+        <include refid="selectEduGrowthReportVo"/>
+        where child_id = #{childId}
+        order by report_date desc
+    </select>
 </mapper>

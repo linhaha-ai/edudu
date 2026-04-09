@@ -88,8 +88,15 @@ public class EduFavoriteServiceImpl implements IEduFavoriteService
      * @return 结果
      */
     @Override
-    public int deleteEduFavoriteById(Long id)
-    {
+    public int deleteEduFavoriteById(Long id) {
         return eduFavoriteMapper.deleteEduFavoriteById(id);
+    }
+
+    /**
+     * 根据用户ID、类型、来源ID删除收藏
+     */
+    @Override
+    public int deleteEduFavoriteBySourceId(Long userId, String type, Long sourceId) {
+        return eduFavoriteMapper.deleteEduFavoriteBySourceId(userId, type, sourceId);
     }
 }

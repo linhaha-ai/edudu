@@ -88,8 +88,15 @@ public class EduParentAnswerServiceImpl implements IEduParentAnswerService
      * @return 结果
      */
     @Override
-    public int deleteEduParentAnswerById(Long id)
-    {
+    public int deleteEduParentAnswerById(Long id) {
         return eduParentAnswerMapper.deleteEduParentAnswerById(id);
+    }
+
+    /**
+     * 根据问题ID查询AI回答
+     */
+    @Override
+    public EduParentAnswer selectEduParentAnswerByQuestionId(Long questionId) {
+        return eduParentAnswerMapper.selectEduParentAnswerByQuestionId(questionId);
     }
 }

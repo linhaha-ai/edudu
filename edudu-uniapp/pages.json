@@ -1,0 +1,158 @@
+{
+  "pages": [
+    {
+      "path": "pages/user/login",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "AI早教陪伴",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/story/create",
+      "style": {
+        "navigationBarTitleText": "AI讲故事"
+      }
+    },
+    {
+      "path": "pages/story/detail",
+      "style": {
+        "navigationBarTitleText": "故事详情"
+      }
+    },
+    {
+      "path": "pages/story/list",
+      "style": {
+        "navigationBarTitleText": "我的故事"
+      }
+    },
+    {
+      "path": "pages/task/index",
+      "style": {
+        "navigationBarTitleText": "每日任务"
+      }
+    },
+    {
+      "path": "pages/task/detail",
+      "style": {
+        "navigationBarTitleText": "任务详情"
+      }
+    },
+    {
+      "path": "pages/task/stats",
+      "style": {
+        "navigationBarTitleText": "任务统计"
+      }
+    },
+    {
+      "path": "pages/growth/index",
+      "style": {
+        "navigationBarTitleText": "成长记录"
+      }
+    },
+    {
+      "path": "pages/growth/add",
+      "style": {
+        "navigationBarTitleText": "添加记录"
+      }
+    },
+    {
+      "path": "pages/growth/report",
+      "style": {
+        "navigationBarTitleText": "成长报告"
+      }
+    },
+    {
+      "path": "pages/helper/index",
+      "style": {
+        "navigationBarTitleText": "家长助手"
+      }
+    },
+    {
+      "path": "pages/helper/history",
+      "style": {
+        "navigationBarTitleText": "提问历史"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "个人中心"
+      }
+    },
+    {
+      "path": "pages/profile/children",
+      "style": {
+        "navigationBarTitleText": "孩子管理"
+      }
+    },
+    {
+      "path": "pages/profile/children-edit",
+      "style": {
+        "navigationBarTitleText": "编辑孩子"
+      }
+    },
+    {
+      "path": "pages/profile/settings",
+      "style": {
+        "navigationBarTitleText": "设置"
+      }
+    },
+    {
+      "path": "pages/profile/about",
+      "style": {
+        "navigationBarTitleText": "关于"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "AI早教陪伴",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#3B82F6",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/task/index",
+        "iconPath": "static/tabbar/task.png",
+        "selectedIconPath": "static/tabbar/task-active.png",
+        "text": "任务"
+      },
+      {
+        "pagePath": "pages/growth/index",
+        "iconPath": "static/tabbar/growth.png",
+        "selectedIconPath": "static/tabbar/growth-active.png",
+        "text": "成长"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "iconPath": "static/tabbar/profile.png",
+        "selectedIconPath": "static/tabbar/profile-active.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue"
+    }
+  }
+}

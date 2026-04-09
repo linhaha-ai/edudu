@@ -66,4 +66,12 @@ public interface EduUserMapper
      * @return 结果
      */
     public int deleteEduUserByUserIds(Long[] userIds);
+
+    /**
+     * 根据OpenID查询前端用户
+     * 
+     * @param openid 微信OpenID
+     * @return 前端用户
+     */
+    public EduUser selectEduUserByOpenid(String openid);
 }

@@ -58,4 +58,14 @@ public interface IEduFavoriteService
      * @return 结果
      */
     public int deleteEduFavoriteById(Long id);
+
+    /**
+     * 根据用户ID、类型、来源ID删除收藏
+     * 
+     * @param userId 用户ID
+     * @param type 收藏类型
+     * @param sourceId 来源ID
+     * @return 结果
+     */
+    public int deleteEduFavoriteBySourceId(Long userId, String type, Long sourceId);
 }

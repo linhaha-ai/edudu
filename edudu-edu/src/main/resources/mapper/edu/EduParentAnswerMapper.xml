@@ -86,4 +86,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectEduParentAnswerByQuestionId" parameterType="Long" resultMap="EduParentAnswerResult">
+        <include refid="selectEduParentAnswerVo"/>
+        where question_id = #{questionId} limit 1
+    </select>
 </mapper>

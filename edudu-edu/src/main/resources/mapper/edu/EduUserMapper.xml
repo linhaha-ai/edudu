@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="avatar"    column="avatar"    />
         <result property="gender"    column="gender"    />
         <result property="birthday"    column="birthday"    />
+        <result property="parentId"    column="parent_id"    />
         <result property="password"    column="password"    />
         <result property="status"    column="status"    />
         <result property="delFlag"    column="del_flag"    />
@@ -26,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectEduUserVo">
-        select user_id, union_id, open_id, phone, nickname, avatar, gender, birthday, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, remark from edu_user
+        select user_id, union_id, open_id, phone, nickname, avatar, gender, birthday, parent_id, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, remark from edu_user
     </sql>
 
     <select id="selectEduUserList" parameterType="EduUser" resultMap="EduUserResult">
@@ -39,6 +40,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
             <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
             <if test="birthday != null "> and birthday = #{birthday}</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
             <if test="password != null  and password != ''"> and password = #{password}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="loginIp != null  and loginIp != ''"> and login_ip = #{loginIp}</if>
@@ -66,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="avatar != null">avatar,</if>
             <if test="gender != null">gender,</if>
             <if test="birthday != null">birthday,</if>
+            <if test="parentId != null">parent_id,</if>
             <if test="password != null">password,</if>
             <if test="status != null">status,</if>
             <if test="delFlag != null">del_flag,</if>
@@ -85,6 +88,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="avatar != null">#{avatar},</if>
             <if test="gender != null">#{gender},</if>
             <if test="birthday != null">#{birthday},</if>
+            <if test="parentId != null">#{parentId},</if>
             <if test="password != null">#{password},</if>
             <if test="status != null">#{status},</if>
             <if test="delFlag != null">#{delFlag},</if>
@@ -108,6 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="avatar != null">avatar = #{avatar},</if>
             <if test="gender != null">gender = #{gender},</if>
             <if test="birthday != null">birthday = #{birthday},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
             <if test="password != null">password = #{password},</if>
             <if test="status != null">status = #{status},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
@@ -132,4 +137,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{userId}
         </foreach>
     </delete>
+
+    <select id="selectEduUserByOpenid" parameterType="String" resultMap="EduUserResult">
+        <include refid="selectEduUserVo"/>
+        where open_id = #{openid} and del_flag = '0'
+    </select>
 </mapper>

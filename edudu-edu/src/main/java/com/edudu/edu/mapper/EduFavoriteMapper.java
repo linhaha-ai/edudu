@@ -58,4 +58,9 @@ public interface EduFavoriteMapper
      * @return 结果
      */
     public int deleteEduFavoriteByIds(Long[] ids);
+
+    /**
+     * 根据用户ID、类型、来源ID删除收藏
+     */
+    public int deleteEduFavoriteBySourceId(Long userId, String type, Long sourceId);
 }

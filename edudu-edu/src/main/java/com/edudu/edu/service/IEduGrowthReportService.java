@@ -58,4 +58,12 @@ public interface IEduGrowthReportService
      * @return 结果
      */
     public int deleteEduGrowthReportById(Long id);
+
+    /**
+     * 根据孩子ID查询成长报告列表
+     * 
+     * @param childId 孩子ID
+     * @return 成长报告列表
+     */
+    public List<EduGrowthReport> selectEduGrowthReportListByChildId(Long childId);
 }

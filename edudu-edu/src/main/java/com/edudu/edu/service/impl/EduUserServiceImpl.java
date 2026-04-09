@@ -134,12 +134,27 @@ public class EduUserServiceImpl implements IEduUserService
      * @return 结果
      */
     @Override
-    public int updateLoginInfo(Long userId, String loginIp, Date loginDate)
-    {
+    public int updateLoginInfo(Long userId, String loginIp, Date loginDate) {
         EduUser user = new EduUser();
         user.setUserId(userId);
         user.setLoginIp(loginIp);
         user.setLoginDate(loginDate);
         return eduUserMapper.updateEduUser(user);
+    }
+
+    /**
+     * 根据OpenID查询前端用户
+     */
+    @Override
+    public EduUser selectEduUserByOpenid(String openid) {
+        return eduUserMapper.selectEduUserByOpenid(openid);
+    }
+
+    /**
+     * 根据用户ID查询前端用户
+     */
+    @Override
+    public EduUser selectEduUserById(Long userId) {
+        return eduUserMapper.selectEduUserByUserId(userId);
     }
 }

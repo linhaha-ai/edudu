@@ -58,4 +58,9 @@ public interface EduParentAnswerMapper
      * @return 结果
      */
     public int deleteEduParentAnswerByIds(Long[] ids);
+
+    /**
+     * 根据问题ID查询AI回答
+     */
+    public EduParentAnswer selectEduParentAnswerByQuestionId(Long questionId);
 }

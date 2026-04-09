@@ -84,4 +84,20 @@ public interface IEduUserService
      * @return 结果
      */
     public int updateLoginInfo(Long userId, String loginIp, java.util.Date loginDate);
+
+    /**
+     * 根据OpenID查询前端用户
+     * 
+     * @param openid 微信OpenID
+     * @return 前端用户
+     */
+    public EduUser selectEduUserByOpenid(String openid);
+
+    /**
+     * 根据用户ID查询前端用户
+     * 
+     * @param userId 用户ID
+     * @return 前端用户
+     */
+    public EduUser selectEduUserById(Long userId);
 }

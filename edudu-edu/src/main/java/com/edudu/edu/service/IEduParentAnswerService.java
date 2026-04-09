@@ -58,4 +58,12 @@ public interface IEduParentAnswerService
      * @return 结果
      */
     public int deleteEduParentAnswerById(Long id);
+
+    /**
+     * 根据问题ID查询AI回答
+     * 
+     * @param questionId 问题ID
+     * @return AI回答
+     */
+    public EduParentAnswer selectEduParentAnswerByQuestionId(Long questionId);
 }
