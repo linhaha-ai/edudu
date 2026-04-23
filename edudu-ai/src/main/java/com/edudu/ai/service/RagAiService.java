@@ -3,8 +3,9 @@ package com.edudu.ai.service;
 import com.edudu.ai.config.RagConfig;
 import com.edudu.ai.dto.ChatRequest;
 import com.edudu.ai.dto.ChatResponse;
-import com.edudu.ai.domain.KnowledgeDocument;
+import com.edudu.ai.memory.MemoryExtractor;
 import com.edudu.ai.memory.RedisChatMemoryStore;
+import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * RAG AI 对话服务
+ * RAG AI 对话服务（重构版）
+ * 基于 LangChain4j AiServices，自动管理 Memory 和 RAG 向量检索
  */
 @Slf4j
 @Service
@@ -25,79 +27,85 @@ public class RagAiService {
 
     @Lazy
     @Autowired(required = false)
+    private AiAssistant aiAssistant;
+
+    @Lazy
+    @Autowired(required = false)
     private ChatLanguageModel chatLanguageModel;
-    
+
     private final RagConfig ragConfig;
-    private final KnowledgeService knowledgeService;
     private final RedisChatMemoryStore memoryStore;
+    private final UserMemoryService userMemoryService;
+    private final ConversationSummaryService conversationSummaryService;
+    private final MemoryExtractor memoryExtractor;
 
     public RagAiService(
             RagConfig ragConfig,
-            KnowledgeService knowledgeService,
-            RedisChatMemoryStore memoryStore) {
+            RedisChatMemoryStore memoryStore,
+            UserMemoryService userMemoryService,
+            ConversationSummaryService conversationSummaryService,
+            MemoryExtractor memoryExtractor) {
         this.ragConfig = ragConfig;
-        this.knowledgeService = knowledgeService;
         this.memoryStore = memoryStore;
+        this.userMemoryService = userMemoryService;
+        this.conversationSummaryService = conversationSummaryService;
+        this.memoryExtractor = memoryExtractor;
     }
-    
+
     /**
      * 检查AI功能是否可用
      */
     private boolean isAiAvailable() {
-        return chatLanguageModel != null;
+        return aiAssistant != null || chatLanguageModel != null;
     }
 
     /**
      * 同步对话
      */
     public ChatResponse chat(ChatRequest request) {
-        // 检查AI是否可用
         if (!isAiAvailable()) {
-            log.warn("ChatLanguageModel bean 未配置，AI功能不可用");
-            return new ChatResponse(
-                    "AI功能暂时不可用，请联系管理员配置AI服务。",
-                    request.getConversationId(),
-                    List.of(),
-                    LocalDateTime.now()
-            );
+            log.warn("AI功能不可用，ChatLanguageModel 未配置");
+            return ChatResponse.unavailable(request.getConversationId());
         }
-        
+
         String conversationId = request.getConversationId();
         if (conversationId == null || conversationId.isEmpty()) {
             conversationId = UUID.randomUUID().toString();
         }
 
-        log.info("开始对话: conversationId={}, message={}", conversationId, request.getMessage());
+        log.info("开始对话: conversationId={}, userId={}, message={}",
+                conversationId, request.getUserId(),
+                request.getMessage().substring(0, Math.min(50, request.getMessage().length())));
 
         try {
-            // 获取对话历史
-            List<String> history = memoryStore.getMessages(conversationId);
+            // 构建带上下文的用户消息
+            String enhancedMessage = buildContextualMessage(conversationId, request.getUserId(), request.getMessage());
 
-            // 构建知识库上下文
-            String knowledgeContext = buildKnowledgeContext();
+            // 调用 AI（AiServices 自动处理 Memory + RAG）
+            String reply;
+            if (aiAssistant != null) {
+                reply = aiAssistant.chat(conversationId, enhancedMessage);
+            } else {
+                // 降级：直接使用 chatLanguageModel
+                reply = chatLanguageModel.generate(request.getMessage());
+            }
 
-            // 构建完整 prompt
-            String fullPrompt = buildPrompt(knowledgeContext, history, request.getMessage());
+            // 后处理：提取用户记忆
+            boolean memoryUpdated = false;
+            if (request.getUserId() != null && ragConfig.isMemoryExtractionEnabled()) {
+                memoryUpdated = memoryExtractor.extractAndSave(
+                        request.getUserId(), request.getMessage(), reply);
+            }
 
-            // 调用 LLM - 使用 generate 方法
-            String reply = chatLanguageModel.generate(fullPrompt);
+            // 后处理：检查是否需要生成摘要
+            checkAndSummarize(conversationId, request.getUserId());
 
-            // 保存对话历史
-            memoryStore.addUserMessage(conversationId, request.getMessage());
-            memoryStore.addAiMessage(conversationId, reply);
-
-            List<String> sources = extractSources();
             log.info("对话完成: conversationId={}", conversationId);
+            return new ChatResponse(reply, conversationId, LocalDateTime.now(), memoryUpdated);
 
-            return new ChatResponse(reply, conversationId, sources, LocalDateTime.now());
         } catch (Exception e) {
             log.error("对话失败: conversationId={}", conversationId, e);
-            return new ChatResponse(
-                    "抱歉，我暂时无法回答您的问题，请稍后重试。",
-                    conversationId,
-                    List.of(),
-                    LocalDateTime.now()
-            );
+            return ChatResponse.error(request.getConversationId());
         }
     }
 
@@ -105,86 +113,71 @@ public class RagAiService {
      * 流式对话（简化版：返回完整响应）
      */
     public String chatStream(ChatRequest request) {
-        String conversationId = request.getConversationId();
-        if (conversationId == null || conversationId.isEmpty()) {
-            conversationId = UUID.randomUUID().toString();
-        }
-
         ChatResponse response = chat(request);
         return response.getReply();
     }
 
     /**
-     * 构建知识库上下文
+     * 构建带上下文的用户消息
+     * 将用户长期记忆和对话摘要注入到消息中，让 AI 在生成回答时参考
      */
-    private String buildKnowledgeContext() {
-        List<KnowledgeDocument> docs = knowledgeService.listEnabled();
-        if (docs.isEmpty()) {
-            return "";
-        }
+    private String buildContextualMessage(String conversationId, Long userId, String userMessage) {
+        StringBuilder contextBuilder = new StringBuilder();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("知识库内容：\n");
-
-        for (KnowledgeDocument doc : docs) {
-            sb.append("【").append(doc.getTitle()).append("】\n");
-            String content = doc.getContent().length() > 500
-                    ? doc.getContent().substring(0, 500) + "..."
-                    : doc.getContent();
-            sb.append(content).append("\n\n");
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * 构建完整 Prompt
-     */
-    private String buildPrompt(String knowledgeContext, List<String> history, String userMessage) {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("你是嘟嘟教育的AI助手，专注于育儿知识和早教内容。\n");
-
-        if (!knowledgeContext.isEmpty()) {
-            sb.append("\n").append(knowledgeContext).append("\n");
-        }
-
-        if (!history.isEmpty()) {
-            sb.append("对话历史：\n");
-            for (String msg : history) {
-                sb.append(msg).append("\n");
+        // 注入用户长期记忆
+        if (userId != null) {
+            String memoryContext = userMemoryService.buildMemoryContext(userId);
+            if (!memoryContext.isEmpty()) {
+                contextBuilder.append(memoryContext).append("\n");
             }
         }
 
-        sb.append("\n用户问题：").append(userMessage).append("\n");
-        sb.append("请根据以上信息回答用户问题。");
+        // 注入对话摘要
+        String summaryContext = conversationSummaryService.buildSummaryContext(conversationId);
+        if (!summaryContext.isEmpty()) {
+            contextBuilder.append(summaryContext);
+        }
 
-        return sb.toString();
+        // 组合最终消息
+        if (contextBuilder.isEmpty()) {
+            return userMessage;
+        }
+
+        return contextBuilder + "\n用户问题：" + userMessage;
     }
 
     /**
-     * 提取引用来源
+     * 检查并生成对话摘要
      */
-    private List<String> extractSources() {
-        List<KnowledgeDocument> docs = knowledgeService.listEnabled();
-        List<String> sources = new ArrayList<>();
-        for (KnowledgeDocument doc : docs) {
-            sources.add(doc.getTitle());
+    private void checkAndSummarize(String conversationId, Long userId) {
+        try {
+            long messageCount = memoryStore.getMessageCount(conversationId);
+            if (conversationSummaryService.shouldSummarize(conversationId, messageCount)) {
+                List<ChatMessage> messages = memoryStore.getMessages(conversationId);
+                if (messages != null && !messages.isEmpty()) {
+                    conversationSummaryService.generateSummary(conversationId, userId, messages);
+                    // 摘要生成后，修剪旧消息，保留最近N条
+                    int keepCount = ragConfig.getMaxMessages();
+                    memoryStore.trimMessages(conversationId, keepCount);
+                }
+            }
+        } catch (Exception e) {
+            log.warn("摘要生成异常: conversationId={}", conversationId, e);
         }
-        return sources;
     }
 
     /**
      * 获取对话历史
      */
-    public List<String> getHistory(String conversationId) {
-        return memoryStore.getMessages(conversationId);
+    public List<ChatMessage> getHistory(String conversationId) {
+        List<ChatMessage> messages = memoryStore.getMessages(conversationId);
+        return messages != null ? messages : new ArrayList<>();
     }
 
     /**
      * 清除对话历史
      */
     public void clearHistory(String conversationId) {
-        memoryStore.clear(conversationId);
+        memoryStore.deleteMessages(conversationId);
     }
 }

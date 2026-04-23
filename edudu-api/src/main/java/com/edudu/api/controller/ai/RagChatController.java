@@ -4,6 +4,7 @@ import com.edudu.ai.dto.ChatRequest;
 import com.edudu.ai.dto.ChatResponse;
 import com.edudu.ai.service.RagAiService;
 import com.edudu.common.core.domain.AjaxResult;
+import dev.langchain4j.data.message.ChatMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,7 +60,7 @@ public class RagChatController {
     @Operation(summary = "获取对话历史")
     public AjaxResult getHistory(
             @Parameter(description = "会话ID") @PathVariable String conversationId) {
-        List<String> history = ragAiService.getHistory(conversationId);
+        List<ChatMessage> history = ragAiService.getHistory(conversationId);
         return AjaxResult.success(history);
     }
 

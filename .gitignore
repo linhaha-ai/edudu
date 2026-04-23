@@ -33,4 +33,6 @@ application.yml
 .idea/
 .codebuddy/
 .opencode/
+.claude/
 openspec/
+CLAUDE.md

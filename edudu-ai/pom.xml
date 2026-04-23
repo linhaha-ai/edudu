@@ -39,6 +39,18 @@
             <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
         </dependency>
 
+        <!-- Redis 向量存储（RAG 用） -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-redis</artifactId>
+        </dependency>
+
+        <!-- Jackson JSON（ChatMemory 序列化用） -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
         <!-- 网页爬虫 -->
         <dependency>
             <groupId>org.jsoup</groupId>

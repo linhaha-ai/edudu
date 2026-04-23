@@ -177,6 +177,13 @@
                 <version>${langchain4j.version}</version>
             </dependency>
 
+            <!-- Redis 向量存储（RAG 用） -->
+            <dependency>
+                <groupId>dev.langchain4j</groupId>
+                <artifactId>langchain4j-redis</artifactId>
+                <version>${langchain4j.version}</version>
+            </dependency>
+
             <!-- 定时任务-->
             <dependency>
                 <groupId>com.edudu</groupId>

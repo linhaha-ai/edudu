@@ -64,8 +64,8 @@ public class ParentController {
         q.setStatus("0");
         questionService.insertEduParentQuestion(q);
 
-        // AI回答
-        String answer = parentAiService.answerQuestion(age, question);
+        // AI回答（传入userId支持对话记忆和长期记忆）
+        String answer = parentAiService.answerQuestion(age, loginUser.getUserId(), question);
 
         // 保存回答
         EduParentAnswer a = new EduParentAnswer();
