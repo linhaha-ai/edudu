@@ -41,6 +41,20 @@
       }
     },
     {
+      "path": "pages/story/bedtime",
+      "style": {
+        "navigationBarTitleText": "睡前故事",
+        "navigationBarBackgroundColor": "#1E1B4B",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/story/emotion",
+      "style": {
+        "navigationBarTitleText": "情绪引导"
+      }
+    },
+    {
       "path": "pages/task/index",
       "style": {
         "navigationBarTitleText": "每日任务"
@@ -56,6 +70,12 @@
       "path": "pages/task/stats",
       "style": {
         "navigationBarTitleText": "任务统计"
+      }
+    },
+    {
+      "path": "pages/task/generate",
+      "style": {
+        "navigationBarTitleText": "生成任务"
       }
     },
     {
@@ -116,6 +136,24 @@
       "path": "pages/profile/about",
       "style": {
         "navigationBarTitleText": "关于"
+      }
+    },
+    {
+      "path": "pages/profile/child-detail",
+      "style": {
+        "navigationBarTitleText": "孩子详情"
+      }
+    },
+    {
+      "path": "pages/ai/chat",
+      "style": {
+        "navigationBarTitleText": "AI对话"
+      }
+    },
+    {
+      "path": "pages/ai/memories",
+      "style": {
+        "navigationBarTitleText": "AI记忆"
       }
     }
   ],

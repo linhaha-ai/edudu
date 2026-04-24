@@ -61,3 +61,31 @@ export interface TaskStatsData {
   typeStats: { type: string; completed: number; total: number }[]
   streakDays: number // 连续完成天数
 }
+
+/**
+ * 生成自定义任务
+ */
+export interface GenerateTaskRequest {
+  age: number
+  theme?: string
+}
+
+export interface GeneratedTaskResponse {
+  id: number
+  title: string
+  goal: string
+  steps: string[]
+  tips: string
+  duration: string
+}
+
+export const generateDailyTask = (data: GenerateTaskRequest) => {
+  return post<ApiResponse<GeneratedTaskResponse>>('/task/generate', data)
+}
+
+/**
+ * 生成并分配每日任务
+ */
+export const allocateDailyTask = (childId: number, age: number) => {
+  return post<ApiResponse<DailyTask[]>>('/task/daily', { childId, age })
+}

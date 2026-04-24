@@ -12,6 +12,18 @@ export interface StoryRequest {
   storyType?: string
 }
 
+export interface BedtimeStoryRequest {
+  age: number
+  gender: string
+  goal?: string
+}
+
+export interface EmotionStoryRequest {
+  age: number
+  gender: string
+  emotion: string
+}
+
 export interface Story {
   id: number
   childId: number
@@ -23,6 +35,8 @@ export interface Story {
   storyType: string
   isFavorite: boolean
   createdAt: string
+  moral?: string
+  interaction?: string[]
 }
 
 /**
@@ -30,6 +44,20 @@ export interface Story {
  */
 export const generateStory = (params: StoryRequest) => {
   return post<ApiResponse<Story>>('/story/generate', params)
+}
+
+/**
+ * 生成睡前故事
+ */
+export const generateBedtimeStory = (params: BedtimeStoryRequest) => {
+  return post<ApiResponse<Story>>('/story/bedtime', params)
+}
+
+/**
+ * 生成情绪引导故事
+ */
+export const generateEmotionStory = (params: EmotionStoryRequest) => {
+  return post<ApiResponse<Story>>('/story/emotion', params)
 }
 
 /**
@@ -42,7 +70,7 @@ export const getStoryDetail = (id: number) => {
 /**
  * 获取我的故事列表
  */
-export const getMyStories = (params?: { page?: number; pageSize?: number }) => {
+export const getMyStories = (params?: { page?: number; pageSize?: number; childId?: number }) => {
   return get<ApiResponse<{ list: Story[]; total: number }>>('/story/my', params)
 }
 

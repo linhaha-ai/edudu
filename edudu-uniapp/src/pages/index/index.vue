@@ -44,38 +44,72 @@
       </view>
     </view>
 
+    <!-- 快捷故事入口 -->
+    <view class="quick-story-section">
+      <text class="section-title">快捷入口</text>
+      <view class="quick-story-grid">
+        <view class="quick-story-card bedtime" @click="goToBedtime">
+          <text class="quick-story-icon">🌙</text>
+          <view class="quick-story-content">
+            <text class="quick-story-title">睡前故事</text>
+            <text class="quick-story-desc">温馨哄睡</text>
+          </view>
+          <text class="quick-story-arrow">›</text>
+        </view>
+        <view class="quick-story-card emotion" @click="goToEmotion">
+          <text class="quick-story-icon">🌈</text>
+          <view class="quick-story-content">
+            <text class="quick-story-title">情绪引导</text>
+            <text class="quick-story-desc">情绪管理</text>
+          </view>
+          <text class="quick-story-arrow">›</text>
+        </view>
+        <view class="quick-story-card generate" @click="goToGenerateTask">
+          <text class="quick-story-icon">🎯</text>
+          <view class="quick-story-content">
+            <text class="quick-story-title">自定义任务</text>
+            <text class="quick-story-desc">生成专属早教</text>
+          </view>
+          <text class="quick-story-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
     <!-- 功能入口卡片 -->
-    <view class="feature-grid">
-      <view class="feature-card" @click="goToStory">
-        <view class="feature-icon story-icon">
-          <text class="icon">📖</text>
+    <view class="feature-section">
+      <text class="section-title">核心功能</text>
+      <view class="feature-grid">
+        <view class="feature-card" @click="goToStory">
+          <view class="feature-icon story-icon">
+            <text class="icon">📖</text>
+          </view>
+          <text class="feature-title">AI讲故事</text>
+          <text class="feature-desc">为孩子定制专属故事</text>
         </view>
-        <text class="feature-title">AI讲故事</text>
-        <text class="feature-desc">为孩子定制专属故事</text>
-      </view>
 
-      <view class="feature-card" @click="goToTasks">
-        <view class="feature-icon task-icon">
-          <text class="icon">📋</text>
+        <view class="feature-card" @click="goToTasks">
+          <view class="feature-icon task-icon">
+            <text class="icon">📋</text>
+          </view>
+          <text class="feature-title">每日任务</text>
+          <text class="feature-desc">科学早教每一天</text>
         </view>
-        <text class="feature-title">每日任务</text>
-        <text class="feature-desc">科学早教每一天</text>
-      </view>
 
-      <view class="feature-card" @click="goToGrowth">
-        <view class="feature-icon growth-icon">
-          <text class="icon">📊</text>
+        <view class="feature-card" @click="goToGrowth">
+          <view class="feature-icon growth-icon">
+            <text class="icon">📊</text>
+          </view>
+          <text class="feature-title">成长记录</text>
+          <text class="feature-desc">记录每一步成长</text>
         </view>
-        <text class="feature-title">成长记录</text>
-        <text class="feature-desc">记录每一步成长</text>
-      </view>
 
-      <view class="feature-card" @click="goToHelper">
-        <view class="feature-icon helper-icon">
-          <text class="icon">💬</text>
+        <view class="feature-card" @click="goToHelper">
+          <view class="feature-icon helper-icon">
+            <text class="icon">💬</text>
+          </view>
+          <text class="feature-title">家长助手</text>
+          <text class="feature-desc">AI育儿问答</text>
         </view>
-        <text class="feature-title">家长助手</text>
-        <text class="feature-desc">AI育儿问答</text>
       </view>
     </view>
 
@@ -159,6 +193,18 @@ const goToProfile = () => {
 
 const goToStory = () => {
   uni.navigateTo({ url: '/pages/story/create' })
+}
+
+const goToBedtime = () => {
+  uni.navigateTo({ url: '/pages/story/bedtime' })
+}
+
+const goToEmotion = () => {
+  uni.navigateTo({ url: '/pages/story/emotion' })
+}
+
+const goToGenerateTask = () => {
+  uni.navigateTo({ url: '/pages/task/generate' })
 }
 
 const goToTasks = () => {

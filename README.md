@@ -16,6 +16,9 @@ AI早教陪伴平台是一款面向0-6岁儿童家长的智能早教助手，核
 
 **核心亮点：**
 - AI智能生成个性化故事和早教内容
+- RAG知识库支持自定义知识库内容
+- 智能对话记忆（会话上下文保持
+- 长期记忆自动提取用户信息
 - 每日早教任务自动推送
 - 成长记录与智能分析报告
 - 家长育儿问答助手
@@ -56,8 +59,9 @@ dudu-edu
 ├── edudu-quartz        # 定时任务
 ├── edudu-generator     # 代码生成器
 ├── edudu-ui            # 前端Vue项目
-├── edudu-api           # 核心业务模块（孩子、故事、任务、成长记录）
+├── edudu-api           # 用户端接口模块
 └── edudu-ai            # AI能力模块
+└── edudu-edu           # 核心业务模块（孩子、故事、任务、成长记录）
 ```
 
 ### 模块详细结构
@@ -106,30 +110,67 @@ edudu-api
 
 #### edudu-ai（AI模块）
 
+基于 LangChain4j 实现，支持 RAG 知识库、对话记忆、长期记忆和对话摘要。
+
 ```
 edudu-ai
 └── com.edudu.ai
     ├── service
-    │   ├── AiService.java
-    │   ├── StoryAiService.java
-    │   ├── TaskAiService.java
-    │   └── ParentAiService.java
+    │   ├── AbstractAiService.java       # AI服务基类
+    │   ├── RagAiService.java            # RAG对话服务（知识库+记忆）
+    │   ├── StoryAiService.java          # AI故事生成
+    │   ├── TaskAiService.java           # AI任务生成
+    │   ├── ParentAiService.java         # 家长助手服务
+    │   ├── UserMemoryService.java       # 用户长期记忆服务
+    │   ├── ConversationSummaryService.java # 对话摘要服务
+    │   ├── KnowledgeService.java        # 知识库管理服务
+    │   ├── AiAssistant.java             # LangChain4j AiServices接口
+    │   └── ParentAssistant.java        # LangChain4j AiServices接口
+    │
+    ├── config
+    │   ├── RagConfig.java              # RAG基础配置
+    │   ├── EmbeddingStoreConfig.java    # 向量存储配置
+    │   └── AiServiceConfig.java        # AiServices配置
+    │
+    ├── memory
+    │   ├── RedisChatMemoryStore.java   # Redis对话记忆存储
+    │   └── MemoryExtractor.java         # 记忆提取器
+    │
+    ├── domain
+    │   ├── KnowledgeDocument.java      # 知识库文档
+    │   ├── UserMemory.java            # 用户长期记忆
+    │   └── ConversationSummary.java   # 对话摘要
+    │
+    ├── mapper
+    │   ├── KnowledgeDocumentMapper.java
+    │   ├── UserMemoryMapper.java
+    │   └── ConversationSummaryMapper.java
     │
     ├── prompt
     │   ├── StoryPromptBuilder.java
     │   ├── TaskPromptBuilder.java
     │   └── ParentPromptBuilder.java
     │
-    ├── config
-    │   └── AiConfig.java
-    │
-    ├── client
-    │   └── OpenAiClient.java
+    ├── scraper
+    │   └── WebScraper.java            # 网页爬虫
     │
     └── dto
-        ├── AiRequest.java
-        └── AiResponse.java
+        ├── ChatRequest.java
+        ├── ChatResponse.java
+        ├── KnowledgeDocRequest.java
+        ├── KnowledgeDocVO.java
+        └── UrlImportRequest.java
 ```
+
+##### AI 能力特性
+
+| 特性 | 说明 |
+|------|------|
+| RAG知识库 | 基于 Redis 向量存储的语义检索，支持文档自动分块和嵌入 |
+| 对话记忆 | 基于 LangChain4j ChatMemory，自动管理会话上下文 |
+| 长期记忆 | 自动从对话中提取用户信息（孩子年龄、性别、偏好等） |
+| 对话摘要 | 长时间对话自动生成摘要，避免上下文溢出 |
+| 多模型支持 | 支持火山引擎豆包、通义千问、OpenAI 等 OpenAI 兼容接口 |
 
 ## 内置功能
 
@@ -182,6 +223,34 @@ edudu-ai
 | edu_ai_knowledge_doc | AI知识库文档表 |
 | edu_ai_user_memory | AI用户长期记忆表 |
 | edu_ai_conversation_summary | AI对话摘要表 |
+
+### AI相关表说明
+
+#### edu_ai_user_memory（用户长期记忆表）
+
+存储跨会话的用户信息，例如孩子年龄、性别、偏好等。
+
+| 字段 | 说明 |
+|------|------|
+| user_id | 用户ID |
+| memory_key | 记忆键（如 child_age, child_gender, preference） |
+| memory_value | 记忆值（如 3岁, 男, 喜欢恐龙） |
+| source | 来源（conversation/manual/system） |
+| create_time | 创建时间 |
+| update_time | 更新时间 |
+
+#### edu_ai_conversation_summary（对话摘要表）
+
+存储长对话的摘要，避免上下文溢出。
+
+| 字段 | 说明 |
+|------|------|
+| conversation_id | 会话ID |
+| user_id | 用户ID |
+| summary | 对话摘要内容 |
+| message_count | 已摘要的消息数 |
+| create_time | 创建时间 |
+| update_time | 更新时间 |
 
 ### 设计要点
 
@@ -312,9 +381,23 @@ Prompt必须做到三点：
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
+| POST | /ai/chat | RAG对话（含知识库检索+对话记忆） |
+| GET | /ai/chat/stream | 流式对话（SSE） |
+| GET | /ai/chat/history/{id} | 获取对话历史 |
+| DELETE | /ai/chat/history/{id} | 清除对话历史 |
 | POST | /ai/story/generate | 生成故事 |
 | POST | /ai/task/generate | 生成每日任务 |
-| POST | /ai/parent/ask | 家长提问 |
+| POST | /api/parent/question | 家长提问 |
+| POST | /api/parent/report | 生成成长报告 |
+| POST | /ai/knowledge/import | 导入知识文档 |
+| POST | /ai/knowledge/import-url | 从URL导入知识 |
+| GET | /ai/knowledge/list | 获取知识文档列表 |
+| DELETE | /ai/knowledge/{id} | 删除知识文档 |
+| POST | /ai/knowledge/rebuild | 重建向量索引 |
+| GET | /ai/memory/{userId} | 获取用户长期记忆 |
+| PUT | /ai/memory/{userId} | 更新用户记忆 |
+| DELETE | /ai/memory/{userId}/{key} | 删除指定记忆 |
+| GET | /ai/memory/{userId}/summary/{conversationId} | 获取对话摘要 |
 
 ### 教育模块接口
 
@@ -440,11 +523,56 @@ public class StoryPromptBuilder {
 
 ### 后端启动
 
-```bash
-# 修改数据库配置
-# 编辑 edudu-admin/src/main/resources/application.yml
+#### 配置说明
 
-# 启动项目
+编辑 `edudu-admin/src/main/resources/application.yml`：
+
+```yaml
+# AI配置
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://aquasearch.volcengineapi.com/v1/  # 火山引擎豆包，或OpenAI
+      api-key: ${VOLCENGINE_API_KEY:your_api_key_here}
+      model-name: doubao-1.5-lite-32k  # 或 gpt-3.5-turbo
+      temperature: 0.7
+      max-tokens: 2048
+  embedding-model:
+    all-minilm-l6-v2:
+      enabled: true  # 本地嵌入模型，无需API
+  ai:
+    memory:
+      max-messages: 20  # 会话记忆保留消息数
+      ttl-hours: 24  # 记忆过期时间
+      summary-threshold: 40  # 超过这个消息数触发摘要
+    rag:
+      top-k: 3  # RAG检索文档数
+      min-score: 0.7  # 最小相似度阈值
+      chunk-size: 500  # 文档分块大小
+      chunk-overlap: 100  # 块重叠大小
+      redis-index: edudu-knowledge  # Redis向量索引名称
+      store: redis  # 向量存储：redis/memory
+    memory-extraction:
+      enabled: true  # 启用自动记忆提取
+```
+
+#### Redis向量搜索配置
+
+生产环境需要：
+1. Redis 6.0+
+2. RediSearch 模块启用（用于向量相似度搜索）
+
+开发环境可以使用内存存储：
+```yaml
+langchain4j:
+  ai:
+    rag:
+      store: memory  # 内存向量存储（重启数据丢失）
+```
+
+#### 启动项目
+
+```bash
 cd edudu-admin
 mvn spring-boot:run
 ```

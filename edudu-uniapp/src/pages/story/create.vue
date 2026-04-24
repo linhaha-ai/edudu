@@ -6,6 +6,26 @@
       <text class="page-desc">为孩子定制专属故事</text>
     </view>
 
+    <!-- 快捷故事入口 -->
+    <view class="quick-stories">
+      <view class="quick-story-card bedtime" @click="goToBedtime">
+        <text class="quick-icon">🌙</text>
+        <view class="quick-info">
+          <text class="quick-title">睡前故事</text>
+          <text class="quick-desc">温馨故事哄睡</text>
+        </view>
+        <text class="quick-arrow">›</text>
+      </view>
+      <view class="quick-story-card emotion" @click="goToEmotion">
+        <text class="quick-icon">🌈</text>
+        <view class="quick-info">
+          <text class="quick-title">情绪引导</text>
+          <text class="quick-desc">帮助处理情绪</text>
+        </view>
+        <text class="quick-arrow">›</text>
+      </view>
+    </view>
+
     <!-- 故事参数表单 -->
     <view class="form-card">
       <!-- 年龄选择 -->
@@ -144,6 +164,16 @@ const toggleTag = (tag: string) => {
   }
 }
 
+// 跳转到睡前故事
+const goToBedtime = () => {
+  uni.navigateTo({ url: '/pages/story/bedtime' })
+}
+
+// 跳转到情绪引导
+const goToEmotion = () => {
+  uni.navigateTo({ url: '/pages/story/emotion' })
+}
+
 // 生成故事
 const handleGenerate = async () => {
   if (!userStore.currentChildId) {
@@ -212,6 +242,59 @@ const handleGenerate = async () => {
 .page-desc {
   font-size: 28rpx;
   color: #6B7280;
+}
+
+.quick-stories {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+}
+
+.quick-story-card {
+  flex: 1;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+
+  &.bedtime {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 2rpx solid rgba(99, 102, 241, 0.2);
+  }
+
+  &.emotion {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
+    border: 2rpx solid rgba(245, 158, 11, 0.2);
+  }
+}
+
+.quick-icon {
+  font-size: 48rpx;
+  margin-right: 16rpx;
+}
+
+.quick-info {
+  flex: 1;
+}
+
+.quick-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1F2937;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.quick-desc {
+  font-size: 22rpx;
+  color: #6B7280;
+}
+
+.quick-arrow {
+  font-size: 40rpx;
+  color: #9CA3AF;
 }
 
 .form-card {
