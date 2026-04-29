@@ -1,6 +1,8 @@
 package com.edudu.framework.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
@@ -16,4 +18,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @MapperScan("com.edudu.**.mapper")
 public class ApplicationConfig
 {
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 }
