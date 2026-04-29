@@ -1,4 +1,3 @@
-
 import { get, post } from '../request'
 import type { ApiResponse } from '../user/types'
 
@@ -37,34 +36,34 @@ export interface UserMemory {
   createdAt: string
 }
 
-export const sendChatMessage = (data: ChatRequest) =&gt; {
-  return post&lt;ApiResponse&lt;ChatResponse&gt;&gt;('/ai/chat', data)
+export const sendChatMessage = (data: ChatRequest) => {
+  return post<ApiResponse<ChatResponse>>('/ai/chat', data)
 }
 
-export const sendParentMessage = (data: ChatRequest) =&gt; {
-  return post&lt;ApiResponse&lt;ChatResponse&gt;&gt;('/ai/parent', data)
+export const sendParentMessage = (data: ChatRequest) => {
+  return post<ApiResponse<ChatResponse>>('/ai/parent', data)
 }
 
-export const getConversationHistory = (conversationId: string) =&gt; {
-  return get&lt;ApiResponse&lt;ChatMessage[]&gt;&gt;(`/ai/history/${conversationId}`)
+export const getConversationHistory = (conversationId: string) => {
+  return get<ApiResponse<ChatMessage[]>>(`/ai/history/${conversationId}`)
 }
 
-export const getRecentConversations = (childId: number) =&gt; {
-  return get&lt;ApiResponse&lt;ConversationSummary[]&gt;&gt;('/ai/conversations', { childId })
+export const getRecentConversations = (childId: number) => {
+  return get<ApiResponse<ConversationSummary[]>>('/ai/conversations', { childId })
 }
 
-export const getUserMemories = (childId: number) =&gt; {
-  return get&lt;ApiResponse&lt;UserMemory[]&gt;&gt;('/ai/memories', { childId })
+export const getUserMemories = (childId: number) => {
+  return get<ApiResponse<UserMemory[]>>('/ai/memories', { childId })
 }
 
-export const createUserMemory = (data: Omit&lt;UserMemory, 'id' | 'createdAt'&gt;) =&gt; {
-  return post&lt;ApiResponse&lt;UserMemory&gt;&gt;('/ai/memories', data)
+export const createUserMemory = (data: Omit<UserMemory, 'id' | 'createdAt'>) => {
+  return post<ApiResponse<UserMemory>>('/ai/memories', data)
 }
 
-export const deleteUserMemory = (id: number) =&gt; {
-  return post&lt;ApiResponse&lt;null&gt;&gt;(`/ai/memories/${id}/delete`, {})
+export const deleteUserMemory = (id: number) => {
+  return post<ApiResponse<null>>(`/ai/memories/${id}/delete`, {})
 }
 
-export const getConversationSummary = (childId: number) =&gt; {
-  return get&lt;ApiResponse&lt;ConversationSummary&gt;&gt;('/ai/summary', { childId })
+export const getConversationSummary = (childId: number) => {
+  return get<ApiResponse<ConversationSummary>>('/ai/summary', { childId })
 }
