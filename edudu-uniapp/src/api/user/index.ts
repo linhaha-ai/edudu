@@ -8,14 +8,14 @@ import type { UserInfo, LoginParams, SmsParams, WechatLoginParams, RegisterParam
  * 获取用户信息
  */
 export const getUserInfo = () => {
-  return get<{ code: number; data: UserInfo; message: string }>('/user/info')
+  return get<{ code: number; data: UserInfo; message: string }>('/auth/info')
 }
 
 /**
  * 发送验证码
  */
 export const sendSmsCode = (params: SmsParams) => {
-  return post<{ code: number; message: string }>('/sms/send', params)
+  return post<{ code: number; message: string }>('/auth/sms/send', params)
 }
 
 /**
@@ -50,5 +50,5 @@ export const logout = () => {
  * 更新用户信息
  */
 export const updateUserInfo = (params: Partial<UserInfo>) => {
-  return post<{ code: number; message: string }>('/user/update', params)
+  return post<{ code: number; message: string }>('/auth/user/update', params)
 }

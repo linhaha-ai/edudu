@@ -8,20 +8,51 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins: [uni()],
     base: '/',
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+          silenceDeprecations: ['import', 'legacy-js-api']
+        }
+      }
+    },
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src')
       }
     },
     server: {
-      port: 8080,
+      port: 8888,
       host: '0.0.0.0',
       open: false,
       proxy: {
-        '/api': {
-          target: 'http://localhost:8081',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
+        '/auth': {
+          target: 'http://localhost:8081/api',
+          changeOrigin: true
+        },
+        '/ai': {
+          target: 'http://localhost:8081/api',
+          changeOrigin: true
+        },
+        '/story': {
+          target: 'http://localhost:8081/api',
+          changeOrigin: true
+        },
+        '/task': {
+          target: 'http://localhost:8081/api',
+          changeOrigin: true
+        },
+        '/child': {
+          target: 'http://localhost:8081/api',
+          changeOrigin: true
+        },
+        '/growth': {
+          target: 'http://localhost:8081/api',
+          changeOrigin: true
+        },
+        '/helper': {
+          target: 'http://localhost:8081/api',
+          changeOrigin: true
         }
       }
     },

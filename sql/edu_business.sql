@@ -30,7 +30,6 @@ create table edu_user
     remark      varchar(500) default null comment '备注',
     primary key (user_id),
     unique key uk_phone (phone),
-    unique key uk_union_id (union_id),
     key idx_open_id (open_id)
 ) engine = innodb
   auto_increment = 1 comment = '前端用户表';

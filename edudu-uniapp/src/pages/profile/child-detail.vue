@@ -1,88 +1,88 @@
 
-&lt;template&gt;
-  &lt;view class="child-detail-page"&gt;
-    &lt;view class="header-section"&gt;
-      &lt;view class="child-avatar-large"&gt;
-        &lt;image v-if="child?.avatar" :src="child.avatar" /&gt;
-        &lt;text v-else&gt;{{ child?.name?.charAt(0) || '宝' }}&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;text class="child-name"&gt;{{ child?.name }}&lt;/text&gt;
-      &lt;text class="child-age"&gt;{{ calculateAge(child?.birthDate) }}岁 · {{ getGenderText(child?.gender) }}&lt;/text&gt;
-    &lt;/view&gt;
+<template>
+  <view class="child-detail-page">
+    <view class="header-section">
+      <view class="child-avatar-large">
+        <image v-if="child?.avatar" :src="child.avatar" />
+        <text v-else>{{ child?.name?.charAt(0) || '宝' }}</text>
+      </view>
+      <text class="child-name">{{ child?.name }}</text>
+      <text class="child-age">{{ calculateAge(child?.birthDate) }}岁 · {{ getGenderText(child?.gender) }}</text>
+    </view>
 
-    &lt;view class="stats-grid"&gt;
-      &lt;view class="stat-item"&gt;
-        &lt;text class="stat-value"&gt;{{ stats.totalStories }}&lt;/text&gt;
-        &lt;text class="stat-label"&gt;AI故事&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;view class="stat-item"&gt;
-        &lt;text class="stat-value"&gt;{{ stats.completedTasks }}&lt;/text&gt;
-        &lt;text class="stat-label"&gt;完成任务&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;view class="stat-item"&gt;
-        &lt;text class="stat-value"&gt;{{ stats.streakDays }}&lt;/text&gt;
-        &lt;text class="stat-label"&gt;连续天数&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;view class="stat-item"&gt;
-        &lt;text class="stat-value"&gt;{{ stats.totalConversations }}&lt;/text&gt;
-        &lt;text class="stat-label"&gt;AI对话&lt;/text&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-value">{{ stats.totalStories }}</text>
+        <text class="stat-label">AI故事</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{ stats.completedTasks }}</text>
+        <text class="stat-label">完成任务</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{ stats.streakDays }}</text>
+        <text class="stat-label">连续天数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-value">{{ stats.totalConversations }}</text>
+        <text class="stat-label">AI对话</text>
+      </view>
+    </view>
 
-    &lt;view class="quick-actions"&gt;
-      &lt;view class="action-card" @click="goToCreateStory"&gt;
-        &lt;text class="action-icon"&gt;📖&lt;/text&gt;
-        &lt;text class="action-title"&gt;生成故事&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;view class="action-card" @click="goToTasks"&gt;
-        &lt;text class="action-icon"&gt;📋&lt;/text&gt;
-        &lt;text class="action-title"&gt;今日任务&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;view class="action-card" @click="goToAiChat"&gt;
-        &lt;text class="action-icon"&gt;💬&lt;/text&gt;
-        &lt;text class="action-title"&gt;AI对话&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;view class="action-card" @click="goToEdit"&gt;
-        &lt;text class="action-icon"&gt;✏️&lt;/text&gt;
-        &lt;text class="action-title"&gt;编辑资料&lt;/text&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
+    <view class="quick-actions">
+      <view class="action-card" @click="goToCreateStory">
+        <text class="action-icon">📖</text>
+        <text class="action-title">生成故事</text>
+      </view>
+      <view class="action-card" @click="goToTasks">
+        <text class="action-icon">📋</text>
+        <text class="action-title">今日任务</text>
+      </view>
+      <view class="action-card" @click="goToAiChat">
+        <text class="action-icon">💬</text>
+        <text class="action-title">AI对话</text>
+      </view>
+      <view class="action-card" @click="goToEdit">
+        <text class="action-icon">✏️</text>
+        <text class="action-title">编辑资料</text>
+      </view>
+    </view>
 
-    &lt;view class="section"&gt;
-      &lt;view class="section-header"&gt;
-        &lt;text class="section-title"&gt;最近故事&lt;/text&gt;
-        &lt;text class="section-more" @click="goToStories"&gt;查看全部 ›&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;view class="story-list"&gt;
-        &lt;view v-for="story in recentStories" :key="story.id" class="story-item" @click="goToStoryDetail(story.id)"&gt;
-          &lt;text class="story-emoji"&gt;{{ story.theme === 'bedtime' ? '🌙' : story.theme === 'emotion' ? '🌈' : '📖' }}&lt;/text&gt;
-          &lt;view class="story-content"&gt;
-            &lt;text class="story-title"&gt;{{ story.title }}&lt;/text&gt;
-            &lt;text class="story-time"&gt;{{ formatTime(story.createdAt) }}&lt;/text&gt;
-          &lt;/view&gt;
-        &lt;/view&gt;
-        &lt;view v-if="recentStories.length === 0" class="empty-mini"&gt;
-          &lt;text class="empty-text"&gt;还没有故事&lt;/text&gt;
-        &lt;/view&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">最近故事</text>
+        <text class="section-more" @click="goToStories">查看全部 ›</text>
+      </view>
+      <view class="story-list">
+        <view v-for="story in recentStories" :key="story.id" class="story-item" @click="goToStoryDetail(story.id)">
+          <text class="story-emoji">{{ story.theme === 'bedtime' ? '🌙' : story.theme === 'emotion' ? '🌈' : '📖' }}</text>
+          <view class="story-content">
+            <text class="story-title">{{ story.title }}</text>
+            <text class="story-time">{{ formatTime(story.createdAt) }}</text>
+          </view>
+        </view>
+        <view v-if="recentStories.length === 0" class="empty-mini">
+          <text class="empty-text">还没有故事</text>
+        </view>
+      </view>
+    </view>
 
-    &lt;view class="section"&gt;
-      &lt;view class="section-header"&gt;
-        &lt;text class="section-title"&gt;AI记忆摘要&lt;/text&gt;
-        &lt;text class="section-more" @click="goToMemories"&gt;管理记忆 ›&lt;/text&gt;
-      &lt;/view&gt;
-      &lt;view class="memory-card"&gt;
-        &lt;text v-if="memorySummary" class="memory-content"&gt;{{ memorySummary }}&lt;/text&gt;
-        &lt;text v-else class="memory-empty"&gt;暂无记忆，开始与AI对话吧~&lt;/text&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">AI记忆摘要</text>
+        <text class="section-more" @click="goToMemories">管理记忆 ›</text>
+      </view>
+      <view class="memory-card">
+        <text v-if="memorySummary" class="memory-content">{{ memorySummary }}</text>
+        <text v-else class="memory-empty">暂无记忆，开始与AI对话吧~</text>
+      </view>
+    </view>
 
-    &lt;view class="bottom-safe"&gt;&lt;/view&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
+    <view class="bottom-safe"></view>
+  </view>
+</template>
 
-&lt;script setup lang="ts"&gt;
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useChildStore } from '@/stores/child'
@@ -116,46 +116,46 @@ const stats = ref({
   totalConversations: 0
 })
 
-const recentStories = ref&lt;StoryItem[]&gt;([])
+const recentStories = ref<StoryItem[]>([])
 const memorySummary = ref('')
 
-const child = computed(() =&gt; {
+const child = computed(() => {
   if (!userStore.currentChildId) return null
-  return childStore.children.find(c =&gt; c.id === userStore.currentChildId)
+  return childStore.children.find(c => c.id === userStore.currentChildId)
 })
 
-const getGenderText = (gender?: string) =&gt; {
+const getGenderText = (gender?: string) => {
   if (gender === 'male') return '男孩'
   if (gender === 'female') return '女孩'
   return '未知'
 }
 
-const formatTime = (time?: string) =&gt; {
+const formatTime = (time?: string) => {
   if (!time) return ''
   const date = new Date(time)
   const now = new Date()
   const diff = now.getTime() - date.getTime()
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(hours / 24)
-  if (days &gt; MAX_RECENT_DAYS) return date.toLocaleDateString()
-  if (days &gt; 0) return `${days}天前`
-  if (hours &gt; 0) return `${hours}小时前`
+  if (days > MAX_RECENT_DAYS) return date.toLocaleDateString()
+  if (days > 0) return `${days}天前`
+  if (hours > 0) return `${hours}小时前`
   return '刚刚'
 }
 
-const goToCreateStory = () =&gt; uni.navigateTo({ url: '/pages/story/create' })
-const goToTasks = () =&gt; uni.switchTab({ url: '/pages/task/index' })
-const goToAiChat = () =&gt; uni.navigateTo({ url: '/pages/ai/chat' })
-const goToEdit = () =&gt; {
+const goToCreateStory = () => uni.navigateTo({ url: '/pages/story/create' })
+const goToTasks = () => uni.switchTab({ url: '/pages/task/index' })
+const goToAiChat = () => uni.navigateTo({ url: '/pages/ai/chat' })
+const goToEdit = () => {
   if (child.value) {
     uni.navigateTo({ url: `/pages/profile/children-edit?id=${child.value.id}` })
   }
 }
-const goToStories = () =&gt; uni.navigateTo({ url: '/pages/story/list' })
-const goToStoryDetail = (id: number) =&gt; uni.navigateTo({ url: `/pages/story/detail?id=${id}` })
-const goToMemories = () =&gt; uni.navigateTo({ url: '/pages/ai/memories' })
+const goToStories = () => uni.navigateTo({ url: '/pages/story/list' })
+const goToStoryDetail = (id: number) => uni.navigateTo({ url: `/pages/story/detail?id=${id}` })
+const goToMemories = () => uni.navigateTo({ url: '/pages/ai/memories' })
 
-onMounted(() =&gt; {
+onMounted(() => {
   if (!userStore.isLoggedIn) {
     uni.reLaunch({ url: '/pages/user/login' })
     return
@@ -175,9 +175,9 @@ onMounted(() =&gt; {
   ]
   memorySummary.value = '孩子喜欢小兔子和公主的故事，对颜色和数字很感兴趣，最近在学习分享和情绪管理。'
 })
-&lt;/script&gt;
+</script>
 
-&lt;style lang="scss" scoped&gt;
+<style lang="scss" scoped>
 .child-detail-page {
   min-height: 100vh;
   background: linear-gradient(180deg, #EEF2FF 0%, #F8F8F8 50%);
@@ -367,4 +367,4 @@ onMounted(() =&gt; {
 .bottom-safe {
   height: 120rpx;
 }
-&lt;/style&gt;
+</style>

@@ -26,7 +26,7 @@ import java.util.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/task")
 @RequiredArgsConstructor
 @Tag(name = "AI早教任务接口")
 public class TaskController {

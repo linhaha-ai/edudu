@@ -1,49 +1,49 @@
 
-&lt;template&gt;
-  &lt;view class="chat-page"&gt;
-    &lt;view class="chat-messages" ref="messagesContainer"&gt;
-      &lt;view v-for="(msg, index) in messages" :key="index" class="message-item" :class="msg.role"&gt;
-        &lt;view v-if="msg.role === 'user'" class="user-avatar"&gt;
-          &lt;text&gt;{{ currentChild?.name?.charAt(0) || '我' }}&lt;/text&gt;
-        &lt;/view&gt;
-        &lt;view v-else class="assistant-avatar"&gt;
-          &lt;text&gt;🤖&lt;/text&gt;
-        &lt;/view&gt;
-        &lt;view class="message-content"&gt;
-          &lt;text class="message-text"&gt;{{ msg.content }}&lt;/text&gt;
-          &lt;text v-if="msg.timestamp" class="message-time"&gt;{{ formatTime(msg.timestamp) }}&lt;/text&gt;
-        &lt;/view&gt;
-      &lt;/view&gt;
+<template>
+  <view class="chat-page">
+    <view class="chat-messages" ref="messagesContainer">
+      <view v-for="(msg, index) in messages" :key="index" class="message-item" :class="msg.role">
+        <view v-if="msg.role === 'user'" class="user-avatar">
+          <text>{{ currentChild?.name?.charAt(0) || '我' }}</text>
+        </view>
+        <view v-else class="assistant-avatar">
+          <text>🤖</text>
+        </view>
+        <view class="message-content">
+          <text class="message-text">{{ msg.content }}</text>
+          <text v-if="msg.timestamp" class="message-time">{{ formatTime(msg.timestamp) }}</text>
+        </view>
+      </view>
 
-      &lt;view v-if="loading" class="message-item assistant"&gt;
-        &lt;view class="assistant-avatar"&gt;
-          &lt;text&gt;🤖&lt;/text&gt;
-        &lt;/view&gt;
-        &lt;view class="message-content"&gt;
-          &lt;view class="typing-indicator"&gt;
-            &lt;view class="dot"&gt;&lt;/view&gt;
-            &lt;view class="dot"&gt;&lt;/view&gt;
-            &lt;view class="dot"&gt;&lt;/view&gt;
-          &lt;/view&gt;
-        &lt;/view&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
+      <view v-if="loading" class="message-item assistant">
+        <view class="assistant-avatar">
+          <text>🤖</text>
+        </view>
+        <view class="message-content">
+          <view class="typing-indicator">
+            <view class="dot"></view>
+            <view class="dot"></view>
+            <view class="dot"></view>
+          </view>
+        </view>
+      </view>
+    </view>
 
-    &lt;view class="chat-input-section"&gt;
-      &lt;view class="quick-prompts" v-if="messages.length === 0"&gt;
-        &lt;view class="prompt-chip" @click="sendQuickPrompt('给我讲个睡前故事')"&gt;
-          &lt;text&gt;🌙 睡前故事&lt;/text&gt;
-        &lt;/view&gt;
-        &lt;view class="prompt-chip" @click="sendQuickPrompt('如何培养孩子的阅读习惯')"&gt;
-          &lt;text&gt;📚 育儿建议&lt;/text&gt;
-        &lt;/view&gt;
-        &lt;view class="prompt-chip" @click="sendQuickPrompt('推荐适合3岁孩子的游戏')"&gt;
-          &lt;text&gt;🎮 游戏推荐&lt;/text&gt;
-        &lt;/view&gt;
-      &lt;/view&gt;
+    <view class="chat-input-section">
+      <view class="quick-prompts" v-if="messages.length === 0">
+        <view class="prompt-chip" @click="sendQuickPrompt('给我讲个睡前故事')">
+          <text>🌙 睡前故事</text>
+        </view>
+        <view class="prompt-chip" @click="sendQuickPrompt('如何培养孩子的阅读习惯')">
+          <text>📚 育儿建议</text>
+        </view>
+        <view class="prompt-chip" @click="sendQuickPrompt('推荐适合3岁孩子的游戏')">
+          <text>🎮 游戏推荐</text>
+        </view>
+      </view>
 
-      &lt;view class="input-wrapper"&gt;
-        &lt;textarea
+      <view class="input-wrapper">
+        <textarea
           v-model="inputMessage"
           class="input-field"
           placeholder="说点什么..."
@@ -51,16 +51,16 @@
           :maxlength="500"
           :auto-height="true"
           :show-confirm-bar="false"
-        /&gt;
-        &lt;button class="send-btn" @click="sendMessage" :disabled="loading || !inputMessage.trim()"&gt;
-          &lt;text&gt;发送&lt;/text&gt;
-        &lt;/button&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
+        />
+        <button class="send-btn" @click="sendMessage" :disabled="loading || !inputMessage.trim()">
+          <text>发送</text>
+        </button>
+      </view>
+    </view>
+  </view>
+</template>
 
-&lt;script setup lang="ts"&gt;
+<script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useChildStore } from '@/stores/child'
@@ -75,24 +75,24 @@ const SCROLL_DURATION = 300
 const userStore = useUserStore()
 const childStore = useChildStore()
 
-const messagesContainer = ref&lt;HTMLElement | null&gt;(null)
+const messagesContainer = ref<HTMLElement | null>(null)
 const inputMessage = ref('')
 const loading = ref(false)
 const conversationId = ref('')
-const messages = ref&lt;ChatMessage[]&gt;([])
+const messages = ref<ChatMessage[]>([])
 
-const currentChild = computed(() =&gt; {
+const currentChild = computed(() => {
   if (!userStore.currentChildId) return null
-  return childStore.children.find(c =&gt; c.id === userStore.currentChildId)
+  return childStore.children.find(c => c.id === userStore.currentChildId)
 })
 
-const formatTime = (time: string) =&gt; {
+const formatTime = (time: string) => {
   const date = new Date(time)
   return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
 }
 
-const scrollToBottom = () =&gt; {
-  nextTick(() =&gt; {
+const scrollToBottom = () => {
+  nextTick(() => {
     if (messagesContainer.value) {
       uni.pageScrollTo({
         scrollTop: 999999,
@@ -102,7 +102,7 @@ const scrollToBottom = () =&gt; {
   })
 }
 
-const sendMessage = async () =&gt; {
+const sendMessage = async () => {
   const content = inputMessage.value.trim()
   if (!content || loading.value) return
 
@@ -124,7 +124,7 @@ const sendMessage = async () =&gt; {
       conversationId: conversationId.value || undefined
     })
 
-    if (res.code === 200 &amp;&amp; res.data) {
+    if (res.code === 200 && res.data) {
       const assistantMessage: ChatMessage = {
         role: 'assistant',
         content: res.data.content,
@@ -141,12 +141,12 @@ const sendMessage = async () =&gt; {
   }
 }
 
-const sendQuickPrompt = (prompt: string) =&gt; {
+const sendQuickPrompt = (prompt: string) => {
   inputMessage.value = prompt
   sendMessage()
 }
 
-onMounted(() =&gt; {
+onMounted(() => {
   if (!userStore.isLoggedIn) {
     uni.reLaunch({ url: '/pages/user/login' })
     return
@@ -161,9 +161,9 @@ onMounted(() =&gt; {
     }
   ]
 })
-&lt;/script&gt;
+</script>
 
-&lt;style lang="scss" scoped&gt;
+<style lang="scss" scoped>
 .chat-page {
   min-height: 100vh;
   background: #F8F8F8;
@@ -325,4 +325,4 @@ onMounted(() =&gt; {
 .send-btn[disabled] {
   opacity: 0.5;
 }
-&lt;/style&gt;
+</style>

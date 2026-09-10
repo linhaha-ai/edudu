@@ -49,10 +49,6 @@ public class EduUser extends BaseEntity
     @Excel(name = "生日", width = 30, dateFormat = "yyyy-MM-dd")
     private Date birthday;
 
-    /** 家长用户ID（关联父账户） */
-    @Excel(name = "家长用户ID")
-    private Long parentId;
-
     /** 密码（可选，手机号登录可为空） */
     @Excel(name = "密码", readConverterExp = "可=选，手机号登录可为空")
     private String password;
@@ -153,17 +149,7 @@ public class EduUser extends BaseEntity
         return birthday;
     }
 
-    public void setParentId(Long parentId)
-    {
-        this.parentId = parentId;
-    }
-
-    public Long getParentId()
-    {
-        return parentId;
-    }
-
-    public void setPassword(String password) 
+    public void setPassword(String password)
     {
         this.password = password;
     }
@@ -224,7 +210,6 @@ public class EduUser extends BaseEntity
             .append("avatar", getAvatar())
             .append("gender", getGender())
             .append("birthday", getBirthday())
-            .append("parentId", getParentId())
             .append("password", getPassword())
             .append("status", getStatus())
             .append("delFlag", getDelFlag())

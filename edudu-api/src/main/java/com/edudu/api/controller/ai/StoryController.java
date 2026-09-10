@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/story")
+@RequestMapping("/story")
 @RequiredArgsConstructor
 @Tag(name = "AI故事接口")
 public class StoryController {

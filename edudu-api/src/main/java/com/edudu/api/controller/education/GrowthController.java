@@ -24,7 +24,7 @@ import java.util.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/growth")
+@RequestMapping("/growth")
 @Tag(name = "成长记录接口")
 public class GrowthController {
 

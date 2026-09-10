@@ -1,102 +1,102 @@
 
-&lt;template&gt;
-  &lt;view class="memories-page"&gt;
-    &lt;view class="page-header"&gt;
-      &lt;text class="page-title"&gt;AI记忆管理&lt;/text&gt;
-      &lt;button class="add-btn" @click="showAddDialog = true"&gt;+ 添加记忆&lt;/button&gt;
-    &lt;/view&gt;
+<template>
+  <view class="memories-page">
+    <view class="page-header">
+      <text class="page-title">AI记忆管理</text>
+      <button class="add-btn" @click="showAddDialog = true">+ 添加记忆</button>
+    </view>
 
-    &lt;view class="summary-card"&gt;
-      &lt;text class="summary-title"&gt;🤖 孩子画像&lt;/text&gt;
-      &lt;text v-if="summary" class="summary-content"&gt;{{ summary }}&lt;/text&gt;
-      &lt;text v-else class="summary-empty"&gt;还没有生成孩子画像，多和AI聊聊天吧~&lt;/text&gt;
-    &lt;/view&gt;
+    <view class="summary-card">
+      <text class="summary-title">🤖 孩子画像</text>
+      <text v-if="summary" class="summary-content">{{ summary }}</text>
+      <text v-else class="summary-empty">还没有生成孩子画像，多和AI聊聊天吧~</text>
+    </view>
 
-    &lt;view class="category-tabs"&gt;
-      &lt;view
+    <view class="category-tabs">
+      <view
         v-for="cat in categories"
         :key="cat.key"
         class="category-tab"
         :class="{ active: currentCategory === cat.key }"
         @click="currentCategory = cat.key"
-      &gt;
-        &lt;text class="tab-icon"&gt;{{ cat.icon }}&lt;/text&gt;
-        &lt;text class="tab-label"&gt;{{ cat.label }}&lt;/text&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
+      >
+        <text class="tab-icon">{{ cat.icon }}</text>
+        <text class="tab-label">{{ cat.label }}</text>
+      </view>
+    </view>
 
-    &lt;view class="memories-list"&gt;
-      &lt;view v-for="memory in filteredMemories" :key="memory.id" class="memory-item"&gt;
-        &lt;view class="memory-header"&gt;
-          &lt;text class="memory-key"&gt;{{ memory.key }}&lt;/text&gt;
-          &lt;view class="memory-meta"&gt;
-            &lt;text v-for="i in memory.importance" :key="i" class="star"&gt;⭐&lt;/text&gt;
-            &lt;text class="memory-time"&gt;{{ formatDate(memory.createdAt) }}&lt;/text&gt;
-          &lt;/view&gt;
-        &lt;/view&gt;
-        &lt;text class="memory-value"&gt;{{ memory.value }}&lt;/text&gt;
-        &lt;view class="memory-actions"&gt;
-          &lt;text class="delete-btn" @click="deleteMemory(memory.id)"&gt;删除&lt;/text&gt;
-        &lt;/view&gt;
-      &lt;/view&gt;
+    <view class="memories-list">
+      <view v-for="memory in filteredMemories" :key="memory.id" class="memory-item">
+        <view class="memory-header">
+          <text class="memory-key">{{ memory.key }}</text>
+          <view class="memory-meta">
+            <text v-for="i in memory.importance" :key="i" class="star">⭐</text>
+            <text class="memory-time">{{ formatDate(memory.createdAt) }}</text>
+          </view>
+        </view>
+        <text class="memory-value">{{ memory.value }}</text>
+        <view class="memory-actions">
+          <text class="delete-btn" @click="deleteMemory(memory.id)">删除</text>
+        </view>
+      </view>
 
-      &lt;view v-if="filteredMemories.length === 0" class="empty-state"&gt;
-        &lt;text class="empty-icon"&gt;💭&lt;/text&gt;
-        &lt;text class="empty-text"&gt;这里还没有记忆&lt;/text&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
+      <view v-if="filteredMemories.length === 0" class="empty-state">
+        <text class="empty-icon">💭</text>
+        <text class="empty-text">这里还没有记忆</text>
+      </view>
+    </view>
 
-    &lt;view v-if="showAddDialog" class="dialog-overlay" @click="showAddDialog = false"&gt;
-      &lt;view class="dialog-content" @click.stop&gt;
-        &lt;text class="dialog-title"&gt;添加记忆&lt;/text&gt;
+    <view v-if="showAddDialog" class="dialog-overlay" @click="showAddDialog = false">
+      <view class="dialog-content" @click.stop>
+        <text class="dialog-title">添加记忆</text>
 
-        &lt;view class="form-item"&gt;
-          &lt;text class="form-label"&gt;分类&lt;/text&gt;
-          &lt;picker mode="selector" :range="categoryOptions" @change="onCategoryChange"&gt;
-            &lt;view class="picker"&gt;
-              &lt;text&gt;{{ categoryOptions[newMemory.categoryIndex] }}&lt;/text&gt;
-              &lt;text class="arrow"&gt;›&lt;/text&gt;
-            &lt;/view&gt;
-          &lt;/picker&gt;
-        &lt;/view&gt;
+        <view class="form-item">
+          <text class="form-label">分类</text>
+          <picker mode="selector" :range="categoryOptions" @change="onCategoryChange">
+            <view class="picker">
+              <text>{{ categoryOptions[newMemory.categoryIndex] }}</text>
+              <text class="arrow">›</text>
+            </view>
+          </picker>
+        </view>
 
-        &lt;view class="form-item"&gt;
-          &lt;text class="form-label"&gt;标签&lt;/text&gt;
-          &lt;input class="form-input" v-model="newMemory.key" placeholder="例如：喜欢的颜色" /&gt;
-        &lt;/view&gt;
+        <view class="form-item">
+          <text class="form-label">标签</text>
+          <input class="form-input" v-model="newMemory.key" placeholder="例如：喜欢的颜色" />
+        </view>
 
-        &lt;view class="form-item"&gt;
-          &lt;text class="form-label"&gt;内容&lt;/text&gt;
-          &lt;textarea class="form-textarea" v-model="newMemory.value" placeholder="描述这个记忆..." :maxlength="200" /&gt;
-        &lt;/view&gt;
+        <view class="form-item">
+          <text class="form-label">内容</text>
+          <textarea class="form-textarea" v-model="newMemory.value" placeholder="描述这个记忆..." :maxlength="200" />
+        </view>
 
-        &lt;view class="form-item"&gt;
-          &lt;text class="form-label"&gt;重要性：{{ newMemory.importance }}星&lt;/text&gt;
-          &lt;view class="importance-selector"&gt;
-            &lt;text
+        <view class="form-item">
+          <text class="form-label">重要性：{{ newMemory.importance }}星</text>
+          <view class="importance-selector">
+            <text
               v-for="i in 5"
               :key="i"
               class="star-btn"
-              :class="{ active: i &lt;= newMemory.importance }"
+              :class="{ active: i <= newMemory.importance }"
               @click="newMemory.importance = i"
-            &gt;
-              {{ i &lt;= newMemory.importance ? '⭐' : '☆' }}
-            &lt;/text&gt;
-          &lt;/view&gt;
-        &lt;/view&gt;
+            >
+              {{ i <= newMemory.importance ? '⭐' : '☆' }}
+            </text>
+          </view>
+        </view>
 
-        &lt;view class="dialog-actions"&gt;
-          &lt;button class="btn btn-cancel" @click="showAddDialog = false"&gt;取消&lt;/button&gt;
-          &lt;button class="btn btn-primary" @click="addMemory"&gt;添加&lt;/button&gt;
-        &lt;/view&gt;
-      &lt;/view&gt;
-    &lt;/view&gt;
+        <view class="dialog-actions">
+          <button class="btn btn-cancel" @click="showAddDialog = false">取消</button>
+          <button class="btn btn-primary" @click="addMemory">添加</button>
+        </view>
+      </view>
+    </view>
 
-    &lt;view class="bottom-safe"&gt;&lt;/view&gt;
-  &lt;/view&gt;
-&lt;/template&gt;
+    <view class="bottom-safe"></view>
+  </view>
+</template>
 
-&lt;script setup lang="ts"&gt;
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useChildStore } from '@/stores/child'
@@ -110,7 +110,7 @@ const childStore = useChildStore()
 const currentCategory = ref('all')
 const showAddDialog = ref(false)
 const summary = ref('')
-const memories = ref&lt;UserMemory[]&gt;([])
+const memories = ref<UserMemory[]>([])
 
 const categories = [
   { key: 'all', label: '全部', icon: '📋' },
@@ -121,7 +121,7 @@ const categories = [
   { key: 'other', label: '其他', icon: '📝' }
 ]
 
-const categoryOptions = categories.filter(c =&gt; c.key !== 'all').map(c =&gt; c.label)
+const categoryOptions = categories.filter(c => c.key !== 'all').map(c => c.label)
 
 const newMemory = ref({
   categoryIndex: 0,
@@ -130,21 +130,21 @@ const newMemory = ref({
   importance: 3
 })
 
-const filteredMemories = computed(() =&gt; {
+const filteredMemories = computed(() => {
   if (currentCategory.value === 'all') return memories.value
-  return memories.value.filter(m =&gt; m.category === currentCategory.value)
+  return memories.value.filter(m => m.category === currentCategory.value)
 })
 
-const formatDate = (dateStr: string) =&gt; {
+const formatDate = (dateStr: string) => {
   const date = new Date(dateStr)
   return date.toLocaleDateString('zh-CN')
 }
 
-const onCategoryChange = (e: any) =&gt; {
+const onCategoryChange = (e: any) => {
   newMemory.value.categoryIndex = e.detail.value
 }
 
-const loadData = async () =&gt; {
+const loadData = async () => {
   if (!userStore.currentChildId) return
 
   try {
@@ -156,7 +156,7 @@ const loadData = async () =&gt; {
     if (memoriesRes.code === 200) {
       memories.value = memoriesRes.data || []
     }
-    if (summaryRes.code === 200 &amp;&amp; summaryRes.data) {
+    if (summaryRes.code === 200 && summaryRes.data) {
       summary.value = summaryRes.data.summary
     }
   } catch (error) {
@@ -185,13 +185,13 @@ const loadData = async () =&gt; {
   }
 }
 
-const addMemory = async () =&gt; {
+const addMemory = async () => {
   if (!newMemory.value.key.trim() || !newMemory.value.value.trim()) {
     showError('请填写完整信息')
     return
   }
 
-  const categoryKeys = categories.filter(c =&gt; c.key !== 'all').map(c =&gt; c.key)
+  const categoryKeys = categories.filter(c => c.key !== 'all').map(c => c.key)
   const category = categoryKeys[newMemory.value.categoryIndex]
 
   try {
@@ -212,7 +212,7 @@ const addMemory = async () =&gt; {
   }
 }
 
-const deleteMemory = async (id: number) =&gt; {
+const deleteMemory = async (id: number) => {
   const confirm = await showConfirm('提示', '确定要删除这条记忆吗？')
   if (!confirm) return
 
@@ -225,7 +225,7 @@ const deleteMemory = async (id: number) =&gt; {
   }
 }
 
-onMounted(() =&gt; {
+onMounted(() => {
   if (!userStore.isLoggedIn) {
     uni.reLaunch({ url: '/pages/user/login' })
     return
@@ -233,9 +233,9 @@ onMounted(() =&gt; {
   childStore.fetchChildren()
   loadData()
 })
-&lt;/script&gt;
+</script>
 
-&lt;style lang="scss" scoped&gt;
+<style lang="scss" scoped>
 .memories-page {
   min-height: 100vh;
   background: #F8F8F8;
@@ -507,4 +507,4 @@ onMounted(() =&gt; {
 .bottom-safe {
   height: 120rpx;
 }
-&lt;/style&gt;
+</style>

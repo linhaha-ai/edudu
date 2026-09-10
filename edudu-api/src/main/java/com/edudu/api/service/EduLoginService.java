@@ -1,7 +1,8 @@
 package com.edudu.api.service;
 
 import com.edudu.api.dto.UpdateUserBody;
-import org.springframework.beans.factory.annotation.Autowired;
+ 
+import jakarta.annotation.Resource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +17,7 @@ import com.edudu.common.utils.MessageUtils;
 import com.edudu.common.utils.StringUtils;
 import com.edudu.common.utils.ip.IpUtils;
 import com.edudu.common.core.domain.entity.EduUser;
+import com.edudu.common.utils.SecurityUtils;
 import com.edudu.edu.service.IEduUserService;
 
 /**
@@ -26,13 +28,13 @@ import com.edudu.edu.service.IEduUserService;
 @Component
 public class EduLoginService {
 
-    @Autowired
+    @Resource
     private EduTokenService eduTokenService;
 
-    @Autowired
+    @Resource
     private AuthenticationManager authenticationManager;
 
-    @Autowired
+    @Resource
     private IEduUserService userService;
 
     /**
@@ -40,20 +42,21 @@ public class EduLoginService {
      */
     public String login(String phone, String password) {
         loginPreCheck(phone, password);
-        Authentication authentication = null;
         try {
+            // Use raw password; let AuthenticationManager handle encoding/validation
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(phone, password);
-            authentication = authenticationManager.authenticate(authenticationToken);
-        } catch (Exception e) {
-            if (e instanceof BadCredentialsException) {
-                throw new ServiceException(MessageUtils.message("user.password.not.match"));
-            } else {
-                throw new ServiceException(e.getMessage());
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            EduLoginUser loginUser = (EduLoginUser) authentication.getPrincipal();
+            if (loginUser == null) {
+                throw new ServiceException("登录失败");
             }
+            recordLoginInfo(loginUser.getUserId());
+            return eduTokenService.createToken(loginUser);
+        } catch (BadCredentialsException e) {
+            throw new ServiceException(MessageUtils.message("user.password.not.match"));
+        } catch (Exception e) {
+            throw new ServiceException(e.getMessage());
         }
-        EduLoginUser loginUser = (EduLoginUser) authentication.getPrincipal();
-        recordLoginInfo(loginUser.getUserId());
-        return eduTokenService.createToken(loginUser);
     }
 
     /**
@@ -79,7 +82,7 @@ public class EduLoginService {
 
         EduUser user = new EduUser();
         user.setPhone(phone);
-        user.setPassword(password);
+        user.setPassword(SecurityUtils.encryptPassword(password));
         user.setNickname(StringUtils.isNotEmpty(nickname) ? nickname : "用户" + phone.substring(7));
         user.setStatus("0");
         user.setDelFlag("0");

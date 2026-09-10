@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/child")
+@RequestMapping("/child")
 @RequiredArgsConstructor
 @Tag(name = "孩子管理接口")
 public class ChildController {
